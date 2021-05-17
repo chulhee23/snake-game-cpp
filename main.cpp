@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "Cell.h"
-#include "Wall.h"
 #include "Snake.h"
 #include "Position.h"
 
@@ -12,6 +11,8 @@
 #define MAP_Y 21
 
 using namespace std;
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -53,13 +54,12 @@ int main(int argc, char const *argv[])
 
         case 1:
           // wall
-          map[i][j] = Wall(1);
+          map[i][j].setValue(1);
           break;
 
         case 2:
           // immune wall
-          map[i][j] = Wall(2);
-          
+          map[i][j].setValue(2);
           break;
 
         case 3:
@@ -73,7 +73,6 @@ int main(int argc, char const *argv[])
           // snake body
           // snake.append_body()
           // 방향에 따라서 바로 고정
-
 
         default:
           

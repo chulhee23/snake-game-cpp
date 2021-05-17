@@ -1,5 +1,5 @@
-#ifndef _POSITION
-#define _POSITION
+#ifndef __POSITION__
+#define __POSITION__
 
 struct Position
 {

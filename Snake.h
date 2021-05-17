@@ -1,5 +1,6 @@
-#ifndef _SNAKE
-#define _SNAKE
+#ifndef __SNAKE__
+#define __SNAKE__
+
 #include <vector>
 #include "Position.h"
 
