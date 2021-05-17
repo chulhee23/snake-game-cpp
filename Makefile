@@ -1,4 +1,15 @@
+CC = g++
+
 all:
-	g++ -std=c++11 -o snakeMap snakeMap.cpp -lncursesw
+	$(CC) -std=c++11 -o snakeMap snakeMap.cpp -lncursesw
+
 mac:
-	g++ -std=c++11 -o snakeMap snakeMap.cpp -lncurses
+	$(CC) -std=c++11 -o snakeMap snakeMap.cpp -lncurses
+
+
+main:
+	$(CC) -o main.out main.cpp
+
+
+clean:
+	rm -f *.o
