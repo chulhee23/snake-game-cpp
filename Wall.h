@@ -1,5 +1,4 @@
-#ifdef _WALL
-#define _WALL
+
 #include "Cell.h"
 
 
@@ -20,5 +19,3 @@ public:
   int getStatus(){return status;}
   
 };
-
-#endif
