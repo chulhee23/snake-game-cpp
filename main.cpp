@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -10,6 +11,8 @@
 
 #define MAP_X 21
 #define MAP_Y 31
+
+
 
 const int CLR_YB = 1;
 const int CLR_WR = 2;
@@ -134,9 +137,9 @@ int main(int argc, char const *argv[])
   long int refTime = clock();
   unsigned int currentTime = 0;
   while (true){
-    int ch = getch();
+    char ch = getch();
     switch (ch){
-      case KEY_LEFT:
+      case 75:
         wattron(snake_map, COLOR_PAIR(CLR_WR));
         mvwprintw(snake_map, 15, 15, "L");
         wattroff(snake_map, COLOR_PAIR(CLR_WR));
@@ -150,9 +153,15 @@ int main(int argc, char const *argv[])
       case KEY_DOWN:
         mvwprintw(snake_map, 5, 5, "D");
         break;
+      default:
+        wattron(snake_map, COLOR_PAIR(CLR_WR));
+        mvwprintw(snake_map, 15, 15, "D");
+        wattroff(snake_map, COLOR_PAIR(CLR_WR));
+        break;
         
     }
     refresh();
+    wrefresh(snake_map);
   }
 
 
