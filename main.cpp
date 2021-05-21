@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <ncurses.h>
+#include <ctime>
 
 #include "Cell.h"
 #include "Snake.h"
@@ -124,15 +125,35 @@ int main(int argc, char const *argv[])
           break;
       }
     }
-
-
   }
   
-  
-  // map 설정 종료 ===================
-
   refresh();
   wrefresh(snake_map);
+  
+  // map 설정 종료 ===================
+  long int refTime = clock();
+  unsigned int currentTime = 0;
+  while (true){
+    int ch = getch();
+    switch (ch){
+      case KEY_LEFT:
+        wattron(snake_map, COLOR_PAIR(CLR_WR));
+        mvwprintw(snake_map, 15, 15, "L");
+        wattroff(snake_map, COLOR_PAIR(CLR_WR));
+        break;
+      case KEY_RIGHT:
+        mvwprintw(snake_map, 5, 5, "R");
+        break;
+      case KEY_UP:
+        mvwprintw(snake_map, 5, 5, "U");
+        break;
+      case KEY_DOWN:
+        mvwprintw(snake_map, 5, 5, "D");
+        break;
+        
+    }
+    refresh();
+  }
 
 
   getch();
