@@ -8,7 +8,12 @@ mac:
 
 
 main:
-	$(CC) -o main.out main.cpp
+	$(CC) -o main.out main.cpp Cell.o Snake.o -lncurses
+
+Cell.o:
+	$(CC) -c Cell.h Cell.cpp
+Snake.o:
+	$(CC) -c Snake.h Snake.cpp
 
 
 clean:

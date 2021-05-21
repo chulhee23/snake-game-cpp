@@ -2,9 +2,14 @@
 #define __SNAKE__
 
 #include <vector>
-#include "Position.h"
 
 using namespace std;
+
+struct Position
+{
+  int x, y;
+};
+
 
 class Snake
 {
