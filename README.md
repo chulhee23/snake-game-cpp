@@ -2,6 +2,19 @@
 
 ## 과제 수행
 
+
+## 뱀 바디
+snake tail 을 Head 의 아래?
+- deque
+    - push, pop
+
+- vector 
+    - push back 
+    - push first
+
+
+
+
 ### 1단계
 NCurses Library 함수들을 사용하여 2차원 배열로 된 Snake Map을 Game 화면으로 표시하는 프로그램을 완성한다
 

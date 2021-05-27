@@ -7,8 +7,8 @@ mac:
 	$(CC) -std=c++11 -o snakeMap snakeMap.cpp -lncurses
 
 
-main:
-	$(CC) -o main.out main.cpp Cell.o Snake.o -lncurses
+main: Cell.o Snake.o
+	$(CC) -o main.out main.cpp -lncurses $^
 
 Cell.o:
 	$(CC) -c Cell.h Cell.cpp
