@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -7,24 +8,36 @@
 #include "Cell.h"
 #include "Snake.h"
 
-
 #define MAP_X 21
 #define MAP_Y 31
 
+const float tick = 0.5;
+const int EMPTY = 0;
+const int WALL = 1;
+const int IMMUNE_WALL = 2;
+
+const int GROW_ITEM = 5;
+const int POISON_ITEM = 6;
+
+
 const int CLR_YB = 1;
-const int CLR_WR = 2;
-const int CLR_RW = 3;
+const int CLR_IMMUNE_WALL = 2;
+const int CLR_POISON_ITEM = 3;
 const int CLR_BY = 4;
-const int CLR_BG = 5;
+const int CLR_WALL = 5;
+const int CLR_GROW_ITEM = 6;
 
 using namespace std;
 
-
+struct Controller {
+  vector<Position> items;
+};
 
 int main(int argc, char const *argv[])
 {
+  Controller controller;
   // map 설정 시작 ===================
-
+  srand(time(NULL));
   const int init_map[MAP_X][MAP_Y] =
       {{2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -53,112 +66,162 @@ int main(int argc, char const *argv[])
   initscr();
   start_color();
   init_pair(CLR_YB, COLOR_YELLOW, COLOR_BLACK);
-  init_pair(CLR_WR, COLOR_WHITE, COLOR_RED);
-  init_pair(CLR_RW, COLOR_RED, COLOR_WHITE);
+  init_pair(CLR_IMMUNE_WALL, COLOR_WHITE, COLOR_RED);
+  init_pair(CLR_POISON_ITEM, COLOR_RED, COLOR_WHITE);
   init_pair(CLR_BY, COLOR_BLACK, COLOR_YELLOW);
-  init_pair(CLR_BG, COLOR_BLACK, COLOR_GREEN);
+  init_pair(CLR_WALL, COLOR_BLACK, COLOR_GREEN);
+  init_pair(CLR_GROW_ITEM, COLOR_BLACK, COLOR_WHITE);
 
   border(ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
   WINDOW *snake_map;
-  snake_map = newwin(MAP_X + 2, MAP_Y + 2, 3, 3);
+  snake_map = newwin(MAP_X, MAP_Y, 3, 3);
 
   wborder(snake_map, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
 
   mvprintw(1, 1, "SNAKE GAME");
 
   Cell **map;
-  map = new Cell*[MAP_X];
-  for(int i = 0; i < MAP_X; i++){
+  map = new Cell *[MAP_X];
+  for (int i = 0; i < MAP_X; i++)
+  {
     map[i] = new Cell[MAP_Y];
   }
 
-  for(int i = 0; i < MAP_X; i++){
-    for(int j = 0; j < MAP_Y; j++){
+  for (int i = 0; i < MAP_X; i++)
+  {
+    for (int j = 0; j < MAP_Y; j++)
+    {
       map[i][j].setValue(init_map[i][j]);
     }
-  
   }
 
   // snake 의 경우 따로 관리
   Snake snake;
 
-  for (int i = 0; i < MAP_X; i++) {
-    for (int j = 0; j < MAP_Y; j++) {
+  for (int i = 0; i < MAP_X; i++)
+  {
+    for (int j = 0; j < MAP_Y; j++)
+    {
       int cellStatus = map[i][j].getValue();
 
-      switch (cellStatus){
-        case 0:
-          // 빈 공간
-          break;
+      switch (cellStatus)
+      {
+      case 0:
+        // 빈 공간
+        break;
 
-        case 1:
-          // wall
-          wattron(snake_map, COLOR_PAIR(CLR_BG));
-          map[i][j].setValue(1);
-          mvwprintw(snake_map, i + 1, j + 1, "W");
-          wattroff(snake_map, COLOR_PAIR(CLR_BG));
-          break;
+      case 1:
+        // wall
+        wattron(snake_map, COLOR_PAIR(CLR_WALL));
+        map[i][j].setValue(1);
+        mvwprintw(snake_map, i, j, "W");
+        wattroff(snake_map, COLOR_PAIR(CLR_WALL));
+        break;
 
-        case 2:
-          // immune wall
-          wattron(snake_map, COLOR_PAIR(CLR_WR));
-          mvwprintw(snake_map, i + 1, j + 1, "I");
-          wattroff(snake_map, COLOR_PAIR(CLR_WR));
-          map[i][j].setValue(2);
-          break;
+      case 2:
+        // immune wall
+        wattron(snake_map, COLOR_PAIR(CLR_IMMUNE_WALL));
+        mvwprintw(snake_map, i, j, "I");
+        wattroff(snake_map, COLOR_PAIR(CLR_IMMUNE_WALL));
+        map[i][j].setValue(2);
+        break;
 
-        case 3:
-          // snake head
-          Position pos;
-          pos.x = i; pos.y = j;
-          // snake.setHead(pos);
-          break;
-        
-        case 4:
-          // snake body
-          // snake.append_body()
-          // 방향에 따라서 바로 고정
-          break;
-        default:
-          
-          // throw exception
-          break;
+      case 3:
+        // snake head
+        Position pos;
+        pos.x = i;
+        pos.y = j;
+        // snake.setHead(pos);
+        break;
+
+      case 4:
+        // snake body
+        // snake.append_body()
+        // 방향에 따라서 바로 고정
+        break;
+      default:
+
+        // throw exception
+        break;
       }
     }
   }
-  
+
   refresh();
   wrefresh(snake_map);
-  
-  // map 설정 종료 ===================
-  long int refTime = clock();
-  unsigned int currentTime = 0;
-  while (true){
-    int ch = getch();
-    switch (ch){
-      case KEY_LEFT:
-        wattron(snake_map, COLOR_PAIR(CLR_WR));
-        mvwprintw(snake_map, 15, 15, "L");
-        wattroff(snake_map, COLOR_PAIR(CLR_WR));
-        break;
-      case KEY_RIGHT:
-        mvwprintw(snake_map, 5, 5, "R");
-        break;
-      case KEY_UP:
-        mvwprintw(snake_map, 5, 5, "U");
-        break;
-      case KEY_DOWN:
-        mvwprintw(snake_map, 5, 5, "D");
-        break;
-        
-    }
-    refresh();
-  }
 
+  // map 설정 종료 ===================
+
+  clock_t start = clock();
+  long double duration = 0;
+  bool duringGame = true;
+  int i = 0;
+
+  while (duringGame)
+  {
+    duration = 0;
+    start = clock();
+    while(true)
+    {
+      duration = (clock() - start) / (double)CLOCKS_PER_SEC;
+      if (duration > 0.5)
+      {
+        // check 0.5 seconds
+        break;
+      }
+
+    }
+    
+    // item 관리 ===============================================
+    for(int i = 0; i < controller.items.size(); i++){
+      Position pos = controller.items[i];
+      
+      int leftTime = (clock() - map[pos.x][pos.y].getCreatedAt()) / (double)CLOCKS_PER_SEC;
+      if (leftTime > 5){
+        map[pos.x][pos.y].setValue(0);
+        mvwprintw(snake_map, pos.x, pos.y, " ");
+
+        controller.items.erase(controller.items.begin() + i);
+      }
+    }
+
+    if (controller.items.size() < 3){
+      int row;
+      int col;
+      do {
+        row = rand() % MAP_X;
+        col = rand() % MAP_Y;
+      } while (map[row][col].getValue() != 0);
+
+      int itemType = rand() % 2 + 5;
+
+      if (itemType == GROW_ITEM){
+        wattron(snake_map, COLOR_PAIR(CLR_GROW_ITEM));
+        mvwprintw(snake_map, row, col, "G");
+        wattroff(snake_map, COLOR_PAIR(CLR_GROW_ITEM));
+      }
+      else
+      {
+        wattron(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
+        mvwprintw(snake_map, row, col, "P");
+        wattroff(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
+      }
+      Position position;
+      position.x = row; position.y = col; 
+      controller.items.push_back(position);
+
+      map[row][col].setValue(itemType);
+      map[row][col].setCreatedAt(clock());
+      
+      
+
+    }
+    
+    wrefresh(snake_map);
+  }
 
   getch();
   endwin();
-
 
   return 0;
 }
