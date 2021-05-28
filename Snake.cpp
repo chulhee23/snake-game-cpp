@@ -3,7 +3,7 @@ using namespace std;
 
 void Snake::move(int d){
   // opposite direction
-  if(d == direction + 2 || d == direction - 2) game_over();
+  // if(d == direction + 2 || d == direction - 2) game_over();
 
   // same direction
   if(d == direction) return;

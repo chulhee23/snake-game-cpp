@@ -24,3 +24,18 @@ NCurses Library 함수들을 사용하여 2차원 배열로 된 Snake Map을 Gam
 
 ### 2단계
 1단계 맵 위에 Snake 표시하고, 화살표를 입력받아 Snake의 이동을 완성한다.
+
+
+
+- 키 입력 받기 (윤호)
+    - 0.5 초 이내에 받은 입력만? 해주기??
+    - item 먹을 경우 성장 or 감소
+
+- 실습 1
+- 실습 2
+- 과제
+
+
+- map refresh (철희)
+- gate 등장 (철희)
+    - gate 및 item 관리
