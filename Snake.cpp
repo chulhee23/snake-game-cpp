@@ -29,7 +29,9 @@ void Snake::move(int d){
 
   Position tail = body.back();
 
-  // body.push_front(head);
+
+  auto it = body.begin();
+  it = body.insert(it, head);
   body.pop_back();
   head = new_head;
   direction = d;
