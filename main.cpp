@@ -11,6 +11,7 @@
 #define MAP_X 21
 #define MAP_Y 43
 #define CLOCKS_PER_SEC 1000
+// CLOCKS_PER_SEC 이 잘못 불러짐.....
 
 const float tick = 0.5;
 const int EMPTY = 0;
