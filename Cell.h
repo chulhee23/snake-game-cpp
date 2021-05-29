@@ -16,7 +16,7 @@ public:
 
   void setValue(int v){value = v;}
   int getValue(){return value;}
-  void setCreatedAt(int time){createdAt = time;}
+  void setCreatedAt(clock_t time){createdAt = time;}
   clock_t getCreatedAt() const;
   
 };

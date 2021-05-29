@@ -32,7 +32,7 @@ using namespace std;
 struct Controller {
   vector<Position> items;
   vector<Position> walls;
-  
+
   Position inGate;
   Position outGate;
 };
@@ -57,7 +57,7 @@ void snakemapRefresh(Cell **map, WINDOW *snake_map)
         mvwprintw(snake_map, i, j, " ");
         wattroff(snake_map, COLOR_PAIR(CLR_WALL));
         controller.walls.push_back(pos);
-        
+
         break;
 
       case IMMUNE_WALL:
@@ -169,41 +169,56 @@ int main(int argc, char const *argv[])
   snakemapRefresh(map, snake_map);
 
   // map 설정 종료 ===================
-
-  clock_t game_start = clock();
-  long double duration = 0;
+  clock_t start = clock();
   bool duringGame = true;
-  int i = 0;
+  int ch, d = 0;
 
+  keypad(stdscr, TRUE);
+  timeout(500);
+  
   while (duringGame)
   {
-    
-    duration = 0;
-    clock_t start = clock();
-    while(true)
+    long double duration = 0;
+
+    ch = getch();
+    if (ch == KEY_UP || ch == KEY_DOWN || ch == KEY_RIGHT || ch == KEY_LEFT)
     {
-      duration = (clock() - start) / (double)CLOCKS_PER_SEC;
-      if (duration > 0.5)
+      switch (ch)
       {
-        // check 0.5 seconds
+      case KEY_UP:
+        d = UP;
+        break;
+      case KEY_DOWN:
+        d = DOWN;
+        break;
+      case KEY_RIGHT:
+        d = RIGHT;
+        break;
+      case KEY_LEFT:
+        d = LEFT;
         break;
       }
-
     }
-    
+    snake.move(d);
+    // cout << d << endl;
     // item 관리 ===============================================
     // destroy item after 5 sec
     for(int i = 0; i < controller.items.size(); i++){
       Position pos = controller.items[i];
-      
-      int leftTime = (clock() - map[pos.x][pos.y].getCreatedAt()) / (double)CLOCKS_PER_SEC;
-      if (leftTime > 5){
-        map[pos.x][pos.y].setValue(0);
+
+      double leftTime = (clock() - map[pos.row][pos.col].getCreatedAt()) / CLOCKS_PER_SEC;
+
+      // cout << leftTime << endl;
+
+      if (leftTime >= 5){
+        map[pos.row][pos.col].setValue(0);
         controller.items.erase(controller.items.begin() + i);
       }
     }
 
     // create items max 3
+    clock_t gameTurnTime = clock();
+
     if (controller.items.size() < 3){
       while (controller.items.size() < 3)
       {
@@ -216,28 +231,29 @@ int main(int argc, char const *argv[])
 
         int itemType = rand() % 2 + GROW_ITEM;
         Position position;
-        position.x = row; position.y = col; 
+        position.row = row; position.col = col; 
         controller.items.push_back(position);
-        map[row][col].setValue(itemType);  
-        map[row][col].setCreatedAt(start);  
-      
+        map[row][col].setValue(itemType);
+        map[row][col].setCreatedAt(gameTurnTime);
+        
       }
 
     }
     // item 관리 끝 ===============================================
 
     // gate open ===============
-    if ((clock() - game_start) / (double)CLOCKS_PER_SEC > 5 ){
+    if ((clock() - start) / (double)CLOCKS_PER_SEC > 5)
+    {
       // gate_open
+      cout << "testset" ;
       Position gate_candidate = controller.walls[rand() % controller.walls.size()];
-      
     }
     // controller.walls.sample
     // if(0){
       
     //   map[gate_candidate.x][gate_candidate.y].setValue(GATE);
     // }
-    
+
     // gate end ================
     snakemapRefresh(map, snake_map);
     wrefresh(snake_map);
