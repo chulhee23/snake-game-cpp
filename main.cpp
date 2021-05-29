@@ -32,7 +32,7 @@ using namespace std;
 struct Controller {
   vector<Position> items;
   vector<Position> walls;
-  
+
   Position inGate;
   Position outGate;
 };
@@ -54,7 +54,7 @@ void snakemapRefresh(Cell **map, WINDOW *snake_map)
         mvwprintw(snake_map, i, j, "W");
         wattroff(snake_map, COLOR_PAIR(CLR_WALL));
         controller.walls.push_back(pos);
-        
+
         break;
 
       case IMMUNE_WALL:
@@ -167,28 +167,36 @@ int main(int argc, char const *argv[])
   clock_t start = clock();
   long double duration = 0;
   bool duringGame = true;
-  int i = 0;
+  int ch, d = 0;
+
+  keypad(stdscr, TRUE);
+  timeout(500);
 
   while (duringGame)
   {
-    
-    duration = 0;
-    start = clock();
-    while(true)
-    {
-      duration = (clock() - start) / (double)CLOCKS_PER_SEC;
-      if (duration > 0.5)
-      {
-        // check 0.5 seconds
-        break;
+    ch = getch();
+    if(ch == KEY_UP || ch == KEY_DOWN || ch == KEY_RIGHT || ch == KEY_LEFT){
+      switch(ch){
+        case KEY_UP:
+          d = UP;
+          break;
+        case KEY_DOWN:
+          d = DOWN;
+          break;
+        case KEY_RIGHT:
+          d = RIGHT;
+          break;
+        case KEY_LEFT:
+          d = LEFT;
+          break;
       }
-
     }
-    
+    snake.move(d);
+
     // item 관리 ===============================================
     for(int i = 0; i < controller.items.size(); i++){
       Position pos = controller.items[i];
-      
+
       int leftTime = (clock() - map[pos.x][pos.y].getCreatedAt()) / (double)CLOCKS_PER_SEC;
       if (leftTime > 5){
         map[pos.x][pos.y].setValue(0);
@@ -208,12 +216,12 @@ int main(int argc, char const *argv[])
 
       int itemType = rand() % 2 + GROW_ITEM;
       Position position;
-      position.x = row; position.y = col; 
+      position.x = row; position.y = col;
       controller.items.push_back(position);
 
       map[row][col].setValue(itemType);
       map[row][col].setCreatedAt(clock());
-      
+
 
     }
     // item 관리 끝 ===============================================
@@ -225,7 +233,7 @@ int main(int argc, char const *argv[])
     //   Position gate_candidate = controller.walls[rand() % controller.walls.size()];
     //   map[gate_candidate.x][gate_candidate.y].setValue(GATE);
     // }
-    
+
     // gate end ================
     snakemapRefresh(map, snake_map);
 
