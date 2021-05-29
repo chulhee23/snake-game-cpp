@@ -29,20 +29,20 @@ void Snake::move(int d){
 
   Position tail = body.back();
 
-  body.push_front(head);
+  // body.push_front(head);
   body.pop_back();
   head = new_head;
   direction = d;
 
-  for(iterator it = item.begin(); it != item.end(); it++){
-    if(it.row == head.row && it.col == head.col){
-      if(it.val == 1){
-        body.push_back(tail);
-      }else if(it.val == -1){
-        body.pop_back();
-      }
-    }
-  }
+  // for(iterator it = item.begin(); it != item.end(); it++){
+  //   if(it.row == head.row && it.col == head.col){
+  //     if(it.val == 1){
+  //       body.push_back(tail);
+  //     }else if(it.val == -1){
+  //       body.pop_back();
+  //     }
+  //   }
+  // }
 
   //if(body.size() < 2) game_over();
 

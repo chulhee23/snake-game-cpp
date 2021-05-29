@@ -12,7 +12,7 @@ using namespace std;
 
 struct Position
 {
-  Position():row(0), row(0){};
+  Position():row(0), col(0){};
   Position(int _row, int _col) : row(_row), col(_col){};
   int row, col;
 };

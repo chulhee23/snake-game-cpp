@@ -197,10 +197,10 @@ int main(int argc, char const *argv[])
     for(int i = 0; i < controller.items.size(); i++){
       Position pos = controller.items[i];
 
-      int leftTime = (clock() - map[pos.x][pos.y].getCreatedAt()) / (double)CLOCKS_PER_SEC;
+      int leftTime = (clock() - map[pos.row][pos.col].getCreatedAt()) / (double)CLOCKS_PER_SEC;
       if (leftTime > 5){
-        map[pos.x][pos.y].setValue(0);
-        mvwprintw(snake_map, pos.x, pos.y, " ");
+        map[pos.row][pos.col].setValue(0);
+        mvwprintw(snake_map, pos.row, pos.col, " ");
 
         controller.items.erase(controller.items.begin() + i);
       }
@@ -216,7 +216,7 @@ int main(int argc, char const *argv[])
 
       int itemType = rand() % 2 + GROW_ITEM;
       Position position;
-      position.x = row; position.y = col;
+      position.row = row; position.col = col;
       controller.items.push_back(position);
 
       map[row][col].setValue(itemType);
