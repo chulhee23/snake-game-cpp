@@ -10,6 +10,9 @@ mac:
 main: Cell.o Snake.o
 	$(CC) -o main.out main.cpp -lncursesw $^
 
+mac_main: Cell.o Snake.o
+	$(CC) -o main.out main.cpp -lncurses $^
+
 Cell.o:
 	$(CC) -c Cell.h Cell.cpp
 Snake.o:

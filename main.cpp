@@ -10,6 +10,7 @@
 
 #define MAP_X 21
 #define MAP_Y 43
+#define CLOCKS_PER_SEC 1000
 
 const float tick = 0.5;
 const int EMPTY = 0;
@@ -65,7 +66,7 @@ void snakemapRefresh(Cell **map, WINDOW *snake_map)
 
       case IMMUNE_WALL:
         wattron(snake_map, COLOR_PAIR(CLR_IMMUNE_WALL));
-        mvwprintw(snake_map, i, j, " ");
+        mvwprintw(snake_map, i, j, "I");
         wattroff(snake_map, COLOR_PAIR(CLR_IMMUNE_WALL));
         break;
 
@@ -181,7 +182,8 @@ int main(int argc, char const *argv[])
   while (duringGame)
   {
     long double duration = 0;
-
+    clock_t roundTime = clock();
+    
     ch = getch();
     if (ch == KEY_UP || ch == KEY_DOWN || ch == KEY_RIGHT || ch == KEY_LEFT)
     {
@@ -202,49 +204,50 @@ int main(int argc, char const *argv[])
       }
     }
     snake.move(d);
-    // cout << d << endl;
+    
     // item 관리 ===============================================
     // destroy item after 5 sec
     for (int i = 0; i < controller.items.size(); i++)
     {
       Position pos = controller.items[i];
-
-      double leftTime = (clock() - map[pos.row][pos.col].getCreatedAt()) / CLOCKS_PER_SEC;
-
-      if (leftTime > 5)
+      double tmp = (double)(roundTime - map[pos.row][pos.col].getCreatedAt()) / CLOCKS_PER_SEC;
+      if (tmp > 5)
       {
-        map[pos.row][pos.col].setValue(0);
         map[pos.row][pos.col].setValue(0);
         controller.items.erase(controller.items.begin() + i);
+        i--;
       }
 
-      if (controller.items.size() < 3)
-      {
-        int row;
-        int col;
-        do
-        {
-          row = rand() % MAP_X;
-          col = rand() % MAP_Y;
-        } while (map[row][col].getValue() != 0);
-
-        int itemType = rand() % 2 + GROW_ITEM;
-        Position position;
-        position.row = row;
-        position.col = col;
-        controller.items.push_back(position);
-
-        map[row][col].setValue(itemType);
-        map[row][col].setCreatedAt(clock());
-      }
+      // item create
     }
-      // item 관리 끝 ===============================================
+    
+    while(controller.items.size() < 3)
+    {
+      int row;
+      int col;
+      do
+      {
+        row = rand() % MAP_X;
+        col = rand() % MAP_Y;
+      } while (map[row][col].getValue() != 0);
+
+      int itemType = rand() % 2 + GROW_ITEM;
+      Position position;
+      position.row = row;
+      position.col = col;
+      controller.items.push_back(position);
+
+      map[row][col].setValue(itemType);
+      map[row][col].setCreatedAt(roundTime);
+    }
+    // item 관리 끝 ===============================================
 
     // gate open ===============
-    if ((clock() - start) / (double)CLOCKS_PER_SEC > 5)
+    // if ((roundTime - start) / (double)CLOCKS_PER_SEC > 1)
+    if (false)
     {
       // gate_open
-      cout << "testset";
+      // cout << "gate open!!!!!!!!!"<<endl;
       Position gate_candidate = controller.walls[rand() % controller.walls.size()];
     }
     // controller.walls.sample
