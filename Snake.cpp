@@ -8,7 +8,7 @@ void Snake::move(int d){
   // same direction
   if(d == direction) return;
 
-  if(d == -1) d = direction;
+  if(d == 0) d = direction;
 
   // make new_head
   Position new_head = head;

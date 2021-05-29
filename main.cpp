@@ -17,7 +17,8 @@ const float tick = 0.5;
 const int EMPTY = 0;
 const int WALL = 1;
 const int IMMUNE_WALL = 2;
-
+const int SNAKE_HEAD = 3;
+const int SNAKE_BODY = 4;
 const int GROW_ITEM = 5;
 const int POISON_ITEM = 6;
 const int GATE = 7;
@@ -25,6 +26,8 @@ const int GATE = 7;
 const int CLR_EMPTY = CLR_EMPTY;
 const int CLR_WALL = WALL;
 const int CLR_IMMUNE_WALL = IMMUNE_WALL;
+const int CLR_SNAKE_HEAD = SNAKE_HEAD;
+const int CLR_SNAKE_BODY = SNAKE_BODY;
 const int CLR_POISON_ITEM = POISON_ITEM;
 const int CLR_GROW_ITEM = GROW_ITEM;
 const int CLR_GATE = GATE;
@@ -41,7 +44,7 @@ struct Controller
 };
 Controller controller;
 
-void snakemapRefresh(Cell **map, WINDOW *snake_map)
+void snakemapRefresh(Cell **map, WINDOW *snake_map, Snake &snake)
 {
   for (int i = 0; i < MAP_X; i++)
   {
@@ -71,15 +74,22 @@ void snakemapRefresh(Cell **map, WINDOW *snake_map)
         wattroff(snake_map, COLOR_PAIR(CLR_IMMUNE_WALL));
         break;
 
-      case 3:
+      case SNAKE_HEAD:
         // snake head
-        // snake.setHead(pos);
+        snake.setHead(pos);
+        wattron(snake_map, COLOR_PAIR(CLR_SNAKE_HEAD));
+        mvwprintw(snake_map, i, j, " ");
+        wattroff(snake_map, COLOR_PAIR(CLR_SNAKE_HEAD));
         break;
 
-      case 4:
+      case SNAKE_BODY:
         // snake body
-        // snake.append_body()
+        snake.append_body(pos);
+        wattron(snake_map, COLOR_PAIR(CLR_SNAKE_BODY));
+        mvwprintw(snake_map, i, j, " ");
+        wattroff(snake_map, COLOR_PAIR(CLR_SNAKE_BODY));
         // 방향에 따라서 바로 고정
+
         break;
       case GROW_ITEM:
         wattron(snake_map, COLOR_PAIR(CLR_GROW_ITEM));
@@ -124,7 +134,7 @@ int main(int argc, char const *argv[])
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-       {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+       {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -140,6 +150,9 @@ int main(int argc, char const *argv[])
   init_pair(CLR_EMPTY, COLOR_BLACK, COLOR_BLACK);
   init_pair(CLR_WALL, COLOR_WHITE, COLOR_WHITE);
   init_pair(CLR_IMMUNE_WALL, COLOR_WHITE, COLOR_RED);
+  init_pair(CLR_SNAKE_HEAD, COLOR_WHITE, COLOR_BLUE);
+  init_pair(CLR_SNAKE_BODY, COLOR_WHITE, COLOR_CYAN);
+  
   init_pair(CLR_GROW_ITEM, COLOR_WHITE, COLOR_GREEN);
   init_pair(CLR_POISON_ITEM, COLOR_WHITE, COLOR_MAGENTA);
   init_pair(CLR_GATE, COLOR_WHITE, COLOR_YELLOW);
@@ -170,7 +183,7 @@ int main(int argc, char const *argv[])
   // snake 의 경우 따로 관리
   Snake snake;
   refresh();
-  snakemapRefresh(map, snake_map);
+  snakemapRefresh(map, snake_map, snake);
 
   // map 설정 종료 ===================
   clock_t start = clock();
@@ -204,6 +217,7 @@ int main(int argc, char const *argv[])
         break;
       }
     }
+    cout << d << " ";
     snake.move(d);
     
     // item 관리 ===============================================
@@ -258,7 +272,7 @@ int main(int argc, char const *argv[])
     // }
 
     // gate end ================
-    snakemapRefresh(map, snake_map);
+    snakemapRefresh(map, snake_map, snake);
     wrefresh(snake_map);
   }
 

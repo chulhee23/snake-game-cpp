@@ -25,7 +25,10 @@ class Snake
   vector<Position> body;
 
 public:
+  Snake(){direction = 3;}
+  
   void move(int d);
+  void append_body(Position pos){body.push_back(pos);}
   void setHead(Position pos){head = pos;}
   void setDirection(int d){direction = d;}
   int getLength(){return body.size();}
