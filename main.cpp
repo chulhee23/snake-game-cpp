@@ -205,10 +205,10 @@ int main(int argc, char const *argv[])
     // destroy item after 5 sec
     for(int i = 0; i < controller.items.size(); i++){
       Position pos = controller.items[i];
-
+      
       double leftTime = (clock() - map[pos.row][pos.col].getCreatedAt()) / CLOCKS_PER_SEC;
 
-      // cout << leftTime << endl;
+      cout << leftTime << endl;
 
       if (leftTime >= 5){
         map[pos.row][pos.col].setValue(0);
@@ -217,8 +217,8 @@ int main(int argc, char const *argv[])
     }
 
     // create items max 3
-    clock_t gameTurnTime = clock();
 
+    clock_t gameTurnTime = clock();
     if (controller.items.size() < 3){
       while (controller.items.size() < 3)
       {
