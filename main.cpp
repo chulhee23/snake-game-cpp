@@ -29,7 +29,8 @@ const int CLR_GATE = GATE;
 
 using namespace std;
 
-struct Controller {
+struct Controller
+{
   vector<Position> items;
   vector<Position> walls;
 
@@ -40,8 +41,10 @@ Controller controller;
 
 void snakemapRefresh(Cell **map, WINDOW *snake_map)
 {
-  for(int i = 0; i < MAP_X; i++){
-    for (int j = 0; j < MAP_Y; j++){
+  for (int i = 0; i < MAP_X; i++)
+  {
+    for (int j = 0; j < MAP_Y; j++)
+    {
       Position pos(i, j);
       int cellStatus = map[i][j].getValue();
       switch (cellStatus)
@@ -77,14 +80,14 @@ void snakemapRefresh(Cell **map, WINDOW *snake_map)
         // 방향에 따라서 바로 고정
         break;
       case GROW_ITEM:
-          wattron(snake_map, COLOR_PAIR(CLR_GROW_ITEM));
-          mvwprintw(snake_map, i, j, " ");
-          wattroff(snake_map, COLOR_PAIR(CLR_GROW_ITEM));
+        wattron(snake_map, COLOR_PAIR(CLR_GROW_ITEM));
+        mvwprintw(snake_map, i, j, " ");
+        wattroff(snake_map, COLOR_PAIR(CLR_GROW_ITEM));
         break;
       case POISON_ITEM:
-          wattron(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
-          mvwprintw(snake_map, i, j, " ");
-          wattroff(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
+        wattron(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
+        mvwprintw(snake_map, i, j, " ");
+        wattroff(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
         break;
       case GATE:
         wattron(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
@@ -96,7 +99,6 @@ void snakemapRefresh(Cell **map, WINDOW *snake_map)
         break;
       }
     }
-
   }
 }
 
@@ -175,7 +177,7 @@ int main(int argc, char const *argv[])
 
   keypad(stdscr, TRUE);
   timeout(500);
-  
+
   while (duringGame)
   {
     long double duration = 0;
@@ -203,46 +205,51 @@ int main(int argc, char const *argv[])
     // cout << d << endl;
     // item 관리 ===============================================
     // destroy item after 5 sec
-    for(int i = 0; i < controller.items.size(); i++){
+    for (int i = 0; i < controller.items.size(); i++)
+    {
       Position pos = controller.items[i];
-      
+
       double leftTime = (clock() - map[pos.row][pos.col].getCreatedAt()) / CLOCKS_PER_SEC;
 
-      if (leftTime > 5){
+      if (leftTime > 5)
+      {
         map[pos.row][pos.col].setValue(0);
         map[pos.row][pos.col].setValue(0);
         controller.items.erase(controller.items.begin() + i);
       }
 
-    if (controller.items.size() < 3){
-      int row;
-      int col;
-      do {
-        row = rand() % MAP_X;
-        col = rand() % MAP_Y;
-      } while (map[row][col].getValue() != 0);
+      if (controller.items.size() < 3)
+      {
+        int row;
+        int col;
+        do
+        {
+          row = rand() % MAP_X;
+          col = rand() % MAP_Y;
+        } while (map[row][col].getValue() != 0);
 
-      int itemType = rand() % 2 + GROW_ITEM;
-      Position position;
-      position.row = row; position.col = col;
-      controller.items.push_back(position);
+        int itemType = rand() % 2 + GROW_ITEM;
+        Position position;
+        position.row = row;
+        position.col = col;
+        controller.items.push_back(position);
 
-      map[row][col].setValue(itemType);
-      map[row][col].setCreatedAt(clock());
-
-    
-    // item 관리 끝 ===============================================
+        map[row][col].setValue(itemType);
+        map[row][col].setCreatedAt(clock());
+      }
+    }
+      // item 관리 끝 ===============================================
 
     // gate open ===============
     if ((clock() - start) / (double)CLOCKS_PER_SEC > 5)
     {
       // gate_open
-      cout << "testset" ;
+      cout << "testset";
       Position gate_candidate = controller.walls[rand() % controller.walls.size()];
     }
     // controller.walls.sample
     // if(0){
-      
+
     //   map[gate_candidate.x][gate_candidate.y].setValue(GATE);
     // }
 
@@ -255,4 +262,4 @@ int main(int argc, char const *argv[])
   endwin();
 
   return 0;
-}
+  }
