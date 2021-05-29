@@ -8,7 +8,7 @@ mac:
 
 
 main: Cell.o Snake.o
-	$(CC) -o main.out main.cpp -lncurses $^
+	$(CC) -o main.out main.cpp -lncursesw $^
 
 Cell.o:
 	$(CC) -c Cell.h Cell.cpp

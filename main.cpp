@@ -208,37 +208,29 @@ int main(int argc, char const *argv[])
       
       double leftTime = (clock() - map[pos.row][pos.col].getCreatedAt()) / CLOCKS_PER_SEC;
 
-      cout << leftTime << endl;
-
-      if (leftTime >= 5){
+      if (leftTime > 5){
+        map[pos.row][pos.col].setValue(0);
         map[pos.row][pos.col].setValue(0);
         controller.items.erase(controller.items.begin() + i);
       }
-    }
 
-    // create items max 3
-
-    clock_t gameTurnTime = clock();
     if (controller.items.size() < 3){
-      while (controller.items.size() < 3)
-      {
-        int row;
-        int col;
-        do {
-          row = rand() % MAP_X;
-          col = rand() % MAP_Y;
-        } while (map[row][col].getValue() != 0);
+      int row;
+      int col;
+      do {
+        row = rand() % MAP_X;
+        col = rand() % MAP_Y;
+      } while (map[row][col].getValue() != 0);
 
-        int itemType = rand() % 2 + GROW_ITEM;
-        Position position;
-        position.row = row; position.col = col; 
-        controller.items.push_back(position);
-        map[row][col].setValue(itemType);
-        map[row][col].setCreatedAt(gameTurnTime);
-        
-      }
+      int itemType = rand() % 2 + GROW_ITEM;
+      Position position;
+      position.row = row; position.col = col;
+      controller.items.push_back(position);
 
-    }
+      map[row][col].setValue(itemType);
+      map[row][col].setCreatedAt(clock());
+
+    
     // item 관리 끝 ===============================================
 
     // gate open ===============
