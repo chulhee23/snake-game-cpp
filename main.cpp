@@ -76,7 +76,6 @@ void snakemapRefresh(Cell **map, WINDOW *snake_map, Snake &snake)
 
       case SNAKE_HEAD:
         // snake head
-        snake.setHead(pos);
         wattron(snake_map, COLOR_PAIR(CLR_SNAKE_HEAD));
         mvwprintw(snake_map, i, j, " ");
         wattroff(snake_map, COLOR_PAIR(CLR_SNAKE_HEAD));
@@ -84,7 +83,6 @@ void snakemapRefresh(Cell **map, WINDOW *snake_map, Snake &snake)
 
       case SNAKE_BODY:
         // snake body
-        snake.append_body(pos);
         wattron(snake_map, COLOR_PAIR(CLR_SNAKE_BODY));
         mvwprintw(snake_map, i, j, " ");
         wattroff(snake_map, COLOR_PAIR(CLR_SNAKE_BODY));
@@ -152,7 +150,7 @@ int main(int argc, char const *argv[])
   init_pair(CLR_IMMUNE_WALL, COLOR_WHITE, COLOR_RED);
   init_pair(CLR_SNAKE_HEAD, COLOR_WHITE, COLOR_BLUE);
   init_pair(CLR_SNAKE_BODY, COLOR_WHITE, COLOR_CYAN);
-  
+
   init_pair(CLR_GROW_ITEM, COLOR_WHITE, COLOR_GREEN);
   init_pair(CLR_POISON_ITEM, COLOR_WHITE, COLOR_MAGENTA);
   init_pair(CLR_GATE, COLOR_WHITE, COLOR_YELLOW);
@@ -197,7 +195,7 @@ int main(int argc, char const *argv[])
   {
     long double duration = 0;
     clock_t roundTime = clock();
-    
+
     ch = getch();
     if (ch == KEY_UP || ch == KEY_DOWN || ch == KEY_RIGHT || ch == KEY_LEFT)
     {
@@ -217,9 +215,9 @@ int main(int argc, char const *argv[])
         break;
       }
     }
-    cout << d << " ";
-    snake.move(d);
-    
+
+    snake.move(d, map);
+
     // item 관리 ===============================================
     // destroy item after 5 sec
     for (int i = 0; i < controller.items.size(); i++)
@@ -235,7 +233,7 @@ int main(int argc, char const *argv[])
 
       // item create
     }
-    
+
     while(controller.items.size() < 3)
     {
       int row;
