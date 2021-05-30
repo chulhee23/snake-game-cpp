@@ -7,21 +7,23 @@
 
 #include "Cell.h"
 #include "Snake.h"
+#include "Position.h"
+#include "Controller.h"
 
-#define MAP_X 21
-#define MAP_Y 43
 #define CLOCKS_PER_SEC 1000
 // CLOCKS_PER_SEC 이 잘못 불러짐.....
 
-const float tick = 0.5;
-const int EMPTY = 0;
-const int WALL = 1;
-const int IMMUNE_WALL = 2;
-const int SNAKE_HEAD = 3;
-const int SNAKE_BODY = 4;
-const int GROW_ITEM = 5;
-const int POISON_ITEM = 6;
-const int GATE = 7;
+extern const int MAP_X = 21;
+extern const int MAP_Y = 43;
+extern const float tick = 0.5;
+extern const int EMPTY = 0;
+extern const int WALL = 1;
+extern const int IMMUNE_WALL = 2;
+extern const int SNAKE_HEAD = 3;
+extern const int SNAKE_BODY = 4;
+extern const int GROW_ITEM = 5;
+extern const int POISON_ITEM = 6;
+extern const int GATE = 7;
 
 const int CLR_EMPTY = CLR_EMPTY;
 const int CLR_WALL = WALL;
@@ -34,14 +36,7 @@ const int CLR_GATE = GATE;
 
 using namespace std;
 
-struct Controller
-{
-  vector<Position> items;
-  vector<Position> walls;
 
-  Position inGate;
-  Position outGate;
-};
 Controller controller;
 
 void snakemapRefresh(Cell **map, WINDOW *snake_map, Snake &snake)
@@ -100,9 +95,9 @@ void snakemapRefresh(Cell **map, WINDOW *snake_map, Snake &snake)
         wattroff(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
         break;
       case GATE:
-        wattron(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
+        wattron(snake_map, COLOR_PAIR(CLR_GATE));
         mvwprintw(snake_map, i, j, " ");
-        wattroff(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
+        wattroff(snake_map, COLOR_PAIR(CLR_GATE));
         break;
       default:
         // throw exception
@@ -131,13 +126,13 @@ int main(int argc, char const *argv[])
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-       {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+       {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-       {2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}};
+       {2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2}};
 
   setlocale(LC_ALL, "");
   addch(ACS_LTEE);
@@ -220,48 +215,18 @@ int main(int argc, char const *argv[])
 
     // item 관리 ===============================================
     // destroy item after 5 sec
-    for (int i = 0; i < controller.items.size(); i++)
-    {
-      Position pos = controller.items[i];
-      double tmp = (double)(roundTime - map[pos.row][pos.col].getCreatedAt()) / CLOCKS_PER_SEC;
-      if (tmp > 5)
-      {
-        map[pos.row][pos.col].setValue(0);
-        controller.items.erase(controller.items.begin() + i);
-        i--;
-      }
-
-      // item create
-    }
-
-    while(controller.items.size() < 3)
-    {
-      int row;
-      int col;
-      do
-      {
-        row = rand() % MAP_X;
-        col = rand() % MAP_Y;
-      } while (map[row][col].getValue() != 0);
-
-      int itemType = rand() % 2 + GROW_ITEM;
-      Position position;
-      position.row = row;
-      position.col = col;
-      controller.items.push_back(position);
-
-      map[row][col].setValue(itemType);
-      map[row][col].setCreatedAt(roundTime);
-    }
+    controller.manageItems(map);
+    
     // item 관리 끝 ===============================================
 
     // gate open ===============
-    // if ((roundTime - start) / (double)CLOCKS_PER_SEC > 1)
-    if (false)
+    
+    if (snake.getLength() > 5)
     {
       // gate_open
       // cout << "gate open!!!!!!!!!"<<endl;
       Position gate_candidate = controller.walls[rand() % controller.walls.size()];
+
     }
     // controller.walls.sample
     // if(0){

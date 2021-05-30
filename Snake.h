@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "Cell.h"
-
+#include "Position.h"
 using namespace std;
 
 #define RIGHT 1;
@@ -11,12 +11,6 @@ using namespace std;
 #define LEFT 3;
 #define UP 4;
 
-struct Position
-{
-  Position():row(0), col(0){};
-  Position(int _row, int _col) : row(_row), col(_col){};
-  int row, col;
-};
 
 
 class Snake
