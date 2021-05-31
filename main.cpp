@@ -4,6 +4,8 @@
 #include <vector>
 #include <ncurses.h>
 #include <ctime>
+#include <chrono>
+#include <thread>
 
 #include "Cell.h"
 #include "Snake.h"
@@ -190,6 +192,8 @@ int main(int argc, char const *argv[])
 
   keypad(stdscr, TRUE);
   timeout(500);
+  noecho();
+  curs_set(FALSE);
 
   while (duringGame)
   {
@@ -199,6 +203,7 @@ int main(int argc, char const *argv[])
     ch = getch();
     if (ch == KEY_UP || ch == KEY_DOWN || ch == KEY_RIGHT || ch == KEY_LEFT)
     {
+      std::this_thread::sleep_for(std::chrono::milliseconds(500 - (clock() - roundTime)));
       switch (ch)
       {
       case KEY_UP:
@@ -215,18 +220,17 @@ int main(int argc, char const *argv[])
         break;
       }
     }
-
-    snake.move(d, map);
+    snake.move(d, map, controller.items);
 
     // item 관리 ===============================================
     // destroy item after 5 sec
     for (int i = 0; i < controller.items.size(); i++)
     {
       Position pos = controller.items[i];
-      double tmp = (double)(roundTime - map[pos.row][pos.col].getCreatedAt()) / CLOCKS_PER_SEC;
+      double tmp = (double)(clock() - map[pos.row][pos.col].getCreatedAt()) / 1000;
       if (tmp > 5)
       {
-        map[pos.row][pos.col].setValue(0);
+        map[pos.row][pos.col].setValue(EMPTY);
         controller.items.erase(controller.items.begin() + i);
         i--;
       }
@@ -251,7 +255,7 @@ int main(int argc, char const *argv[])
       controller.items.push_back(position);
 
       map[row][col].setValue(itemType);
-      map[row][col].setCreatedAt(roundTime);
+      map[row][col].setCreatedAt(clock());
     }
     // item 관리 끝 ===============================================
 
@@ -272,6 +276,8 @@ int main(int argc, char const *argv[])
     // gate end ================
     snakemapRefresh(map, snake_map, snake);
     wrefresh(snake_map);
+
+    flushinp();
   }
 
   getch();

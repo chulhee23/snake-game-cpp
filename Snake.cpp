@@ -1,7 +1,7 @@
 #include "Snake.h"
 using namespace std;
 
-void Snake::move(int d, Cell **map){
+void Snake::move(int d, Cell **map, vector<Position>& items){
   // opposite direction
   // if(d == direction + 2 || d == direction - 2) game_over();
 
@@ -28,6 +28,7 @@ void Snake::move(int d, Cell **map){
   }
 
   Position tail = body.back();
+  map[tail.row][tail.col] = 0;
 
   auto it = body.begin();
   it = body.insert(it, head);
@@ -35,15 +36,21 @@ void Snake::move(int d, Cell **map){
   head = new_head;
   direction = d;
 
-  // for(iterator it = item.begin(); it != item.end(); it++){
-  //   if(it.row == head.row && it.col == head.col){
-  //     if(it.val == 1){
-  //       body.push_back(tail);
-  //     }else if(it.val == -1){
-  //       body.pop_back();
-  //     }
-  //   }
-  // }
+  if(map[head.row][head.col].getValue() == 5){
+    body.push_back(tail);
+  }else if(map[head.row][head.col].getValue() == 6){
+    Position p = body.back();
+    map[p.row][p.col] = 0;
+    body.pop_back();
+  }
+
+  for(int i = 0; i < items.size(); i++){
+    Position p = items[i];
+    if(p.row == head.row && p.col == head.col){
+      items.erase(items.begin() + i);
+      i--;
+    }
+  }
 
   //if(body.size() < 2) game_over();
 
@@ -52,5 +59,4 @@ void Snake::move(int d, Cell **map){
   for(int i = 0; i < body.size(); i++){
     map[body[i].row][body[i].col] = 4;
   }
-  map[tail.row][tail.col] = 0;
 }
