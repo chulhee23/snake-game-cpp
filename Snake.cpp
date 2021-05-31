@@ -1,4 +1,5 @@
 #include "Snake.h"
+#include "Position.h"
 using namespace std;
 
 void Snake::move(int d, Cell **map, vector<Position>& items){
