@@ -81,7 +81,7 @@ int main(int argc, char const *argv[])
 
   init_pair(CLR_GROW_ITEM, COLOR_WHITE, COLOR_GREEN);
   init_pair(CLR_POISON_ITEM, COLOR_WHITE, COLOR_MAGENTA);
-  init_pair(CLR_GATE, COLOR_WHITE, COLOR_YELLOW);
+  init_pair(CLR_GATE, COLOR_BLACK, COLOR_YELLOW);
 
   border(ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
   WINDOW *snake_map;
@@ -163,7 +163,6 @@ int main(int argc, char const *argv[])
       if ( controller.gateOpen == false)
       {
         // gate_open
-        cout << "gate open!!!!!!!!!" << endl;
         controller.openGate(map);
       } else {
         controller.closeGate(map);  

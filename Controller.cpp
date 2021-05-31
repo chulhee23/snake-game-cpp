@@ -167,7 +167,7 @@ void Controller::snakemapRefresh(Cell **map, WINDOW *snake_map)
         break;
       case GATE:
         wattron(snake_map, COLOR_PAIR(CLR_GATE));
-        mvwprintw(snake_map, i, j, " ");
+        mvwprintw(snake_map, i, j, "@");
         wattroff(snake_map, COLOR_PAIR(CLR_GATE));
         break;
       default:
