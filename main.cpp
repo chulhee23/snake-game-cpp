@@ -178,10 +178,13 @@ int main(int argc, char const *argv[])
     wrefresh(snake_map);
 
     flushinp();
+
+    // 뱀 길이 마지막 측정?
+    // 
     // if(duringGame){
       // duringGame = !isGameOver();
     // }
-    
+
   }
 
   getch();
