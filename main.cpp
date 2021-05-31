@@ -11,19 +11,19 @@
 #include "Controller.h"
 
 #define CLOCKS_PER_SEC 1000
-// CLOCKS_PER_SEC 이 잘못 불러짐.....
+// CLOCKS_PER_SEC 이 잘못 불러짐..... 1000000
 
-extern const int MAP_X = 21;
-extern const int MAP_Y = 43;
-extern const float tick = 0.5;
-extern const int EMPTY = 0;
-extern const int WALL = 1;
-extern const int IMMUNE_WALL = 2;
-extern const int SNAKE_HEAD = 3;
-extern const int SNAKE_BODY = 4;
-extern const int GROW_ITEM = 5;
-extern const int POISON_ITEM = 6;
-extern const int GATE = 7;
+const int MAP_X = 21;
+const int MAP_Y = 43;
+const float tick = 0.5;
+const int EMPTY = 0;
+const int WALL = 1;
+const int IMMUNE_WALL = 2;
+const int SNAKE_HEAD = 3;
+const int SNAKE_BODY = 4;
+const int GROW_ITEM = 5;
+const int POISON_ITEM = 6;
+const int GATE = 7;
 
 const int CLR_EMPTY = CLR_EMPTY;
 const int CLR_WALL = WALL;
@@ -39,78 +39,12 @@ using namespace std;
 
 Controller controller;
 
-void snakemapRefresh(Cell **map, WINDOW *snake_map, Snake &snake)
-{
-  for (int i = 0; i < MAP_X; i++)
-  {
-    for (int j = 0; j < MAP_Y; j++)
-    {
-      Position pos(i, j);
-      int cellStatus = map[i][j].getValue();
-      switch (cellStatus)
-      {
-      case EMPTY:
-        // 빈 공간
-        wattron(snake_map, COLOR_PAIR(CLR_EMPTY));
-        mvwprintw(snake_map, i, j, " ");
-        wattroff(snake_map, COLOR_PAIR(CLR_EMPTY));
-        break;
-      case WALL:
-        wattron(snake_map, COLOR_PAIR(CLR_WALL));
-        mvwprintw(snake_map, i, j, " ");
-        wattroff(snake_map, COLOR_PAIR(CLR_WALL));
-        controller.walls.push_back(pos);
-
-        break;
-
-      case IMMUNE_WALL:
-        wattron(snake_map, COLOR_PAIR(CLR_IMMUNE_WALL));
-        mvwprintw(snake_map, i, j, "I");
-        wattroff(snake_map, COLOR_PAIR(CLR_IMMUNE_WALL));
-        break;
-
-      case SNAKE_HEAD:
-        // snake head
-        wattron(snake_map, COLOR_PAIR(CLR_SNAKE_HEAD));
-        mvwprintw(snake_map, i, j, " ");
-        wattroff(snake_map, COLOR_PAIR(CLR_SNAKE_HEAD));
-        break;
-
-      case SNAKE_BODY:
-        // snake body
-        wattron(snake_map, COLOR_PAIR(CLR_SNAKE_BODY));
-        mvwprintw(snake_map, i, j, " ");
-        wattroff(snake_map, COLOR_PAIR(CLR_SNAKE_BODY));
-        // 방향에 따라서 바로 고정
-
-        break;
-      case GROW_ITEM:
-        wattron(snake_map, COLOR_PAIR(CLR_GROW_ITEM));
-        mvwprintw(snake_map, i, j, " ");
-        wattroff(snake_map, COLOR_PAIR(CLR_GROW_ITEM));
-        break;
-      case POISON_ITEM:
-        wattron(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
-        mvwprintw(snake_map, i, j, " ");
-        wattroff(snake_map, COLOR_PAIR(CLR_POISON_ITEM));
-        break;
-      case GATE:
-        wattron(snake_map, COLOR_PAIR(CLR_GATE));
-        mvwprintw(snake_map, i, j, " ");
-        wattroff(snake_map, COLOR_PAIR(CLR_GATE));
-        break;
-      default:
-        // throw exception
-        break;
-      }
-    }
-  }
-}
 
 int main(int argc, char const *argv[])
 {
   // map 설정 시작 ===================
   srand(time(NULL));
+
   const int init_map[MAP_X][MAP_Y] =
       {{2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -127,7 +61,7 @@ int main(int argc, char const *argv[])
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7},
-       {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+       {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -141,7 +75,7 @@ int main(int argc, char const *argv[])
   initscr();
   start_color();
   init_pair(CLR_EMPTY, COLOR_BLACK, COLOR_BLACK);
-  init_pair(CLR_WALL, COLOR_WHITE, COLOR_WHITE);
+  init_pair(CLR_WALL, COLOR_BLACK, COLOR_WHITE);
   init_pair(CLR_IMMUNE_WALL, COLOR_WHITE, COLOR_RED);
   init_pair(CLR_SNAKE_HEAD, COLOR_WHITE, COLOR_BLUE);
   init_pair(CLR_SNAKE_BODY, COLOR_WHITE, COLOR_CYAN);
@@ -176,10 +110,13 @@ int main(int argc, char const *argv[])
   // snake 의 경우 따로 관리
   Snake snake;
   refresh();
-  snakemapRefresh(map, snake_map, snake);
+  controller.snakemapRefresh(map, snake_map);
 
   // map 설정 종료 ===================
-  clock_t start = clock();
+
+  // Game Start
+
+  clock_t gameStartTime = clock();
   bool duringGame = true;
   int ch, d = 0;
 
@@ -214,18 +151,19 @@ int main(int argc, char const *argv[])
     snake.move(d, map);
 
     // item 관리 ===============================================
-    // destroy item after 5 sec
     controller.manageItems(map);
-    
     // item 관리 끝 ===============================================
 
-    // gate open ===============
+    // gate open =======================================
     
-    if (snake.getLength() > 5)
+    
+    // if (snake.getLength() > 5)
+    double tmp = (double)(clock() - gameStartTime) / CLOCKS_PER_SEC;
+    if (tmp > 3)
     {
       // gate_open
-      // cout << "gate open!!!!!!!!!"<<endl;
-      Position gate_candidate = controller.walls[rand() % controller.walls.size()];
+      cout << "gate open!!!!!!!!!" << endl;
+      // Position gate_candidate = controller.walls[rand() % controller.walls.size()];
 
     }
     // controller.walls.sample
@@ -235,7 +173,7 @@ int main(int argc, char const *argv[])
     // }
 
     // gate end ================
-    snakemapRefresh(map, snake_map, snake);
+    controller.snakemapRefresh(map, snake_map);
     wrefresh(snake_map);
   }
 
