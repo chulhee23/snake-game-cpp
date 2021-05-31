@@ -4,6 +4,8 @@
 #include <vector>
 #include <ncurses.h>
 #include <ctime>
+#include <chrono>
+#include <thread>
 
 #include "Cell.h"
 #include "Snake.h"
@@ -122,6 +124,8 @@ int main(int argc, char const *argv[])
 
   keypad(stdscr, TRUE);
   timeout(500);
+  noecho();
+  curs_set(FALSE);
 
   while (duringGame)
   {
@@ -131,6 +135,7 @@ int main(int argc, char const *argv[])
     ch = getch();
     if (ch == KEY_UP || ch == KEY_DOWN || ch == KEY_RIGHT || ch == KEY_LEFT)
     {
+      std::this_thread::sleep_for(std::chrono::milliseconds(500 - (clock() - roundTime)));
       switch (ch)
       {
       case KEY_UP:
@@ -147,12 +152,10 @@ int main(int argc, char const *argv[])
         break;
       }
     }
-
-    snake.move(d, map);
+    snake.move(d, map, controller.items);
 
     // item 관리 ===============================================
     controller.manageItems(map);
-    // item 관리 끝 ===============================================
 
     // gate open =======================================
     
@@ -162,6 +165,7 @@ int main(int argc, char const *argv[])
     if (tmp > 3) {
       if ( controller.gateOpen == false)
       {
+
         // gate_open
         controller.openGate(map);
       } else {
@@ -174,6 +178,8 @@ int main(int argc, char const *argv[])
     // gate end ================
     controller.snakemapRefresh(map, snake_map);
     wrefresh(snake_map);
+
+    flushinp();
   }
 
   getch();

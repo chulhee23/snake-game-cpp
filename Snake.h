@@ -22,7 +22,7 @@ class Snake
 public:
   Snake(){direction = 3; head = Position(15, 18); body.push_back(Position(15, 19)); body.push_back(Position(15, 20));}
 
-  void move(int d, Cell** map);
+  void move(int d, Cell** map, vector<Position>& items);
   void append_body(Position pos){body.push_back(pos);}
   void setHead(Position pos){head = pos;}
   void setDirection(int d){direction = d;}
