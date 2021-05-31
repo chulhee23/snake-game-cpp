@@ -11,7 +11,7 @@ main: Cell.o Snake.o
 	$(CC) -o main.out main.cpp -lncursesw $^
 
 mac_main: Cell.o Snake.o Controller.o
-	$(CC) -o main.out main.cpp -lncurses $^
+	$(CC) -std=c++11 -o main.out main.cpp -lncurses $^
 
 Controller.o:
 	$(CC) -c Controller.h Controller.cpp

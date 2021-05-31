@@ -8,7 +8,7 @@
 
 const int MAP_X = 21;
 const int MAP_Y = 43;
-const float tick = 0.5;
+
 const int EMPTY = 0;
 const int WALL = 1;
 const int IMMUNE_WALL = 2;
@@ -18,7 +18,7 @@ const int GROW_ITEM = 5;
 const int POISON_ITEM = 6;
 const int GATE = 7;
 
-const int CLR_EMPTY = EMPTY;
+const int CLR_EMPTY = CLR_EMPTY;
 const int CLR_WALL = WALL;
 const int CLR_IMMUNE_WALL = IMMUNE_WALL;
 const int CLR_SNAKE_HEAD = SNAKE_HEAD;

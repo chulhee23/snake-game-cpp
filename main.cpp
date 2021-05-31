@@ -17,7 +17,7 @@
 
 const int MAP_X = 21;
 const int MAP_Y = 43;
-const float tick = 0.5;
+
 const int EMPTY = 0;
 const int WALL = 1;
 const int IMMUNE_WALL = 2;
@@ -37,9 +37,6 @@ const int CLR_GROW_ITEM = GROW_ITEM;
 const int CLR_GATE = GATE;
 
 using namespace std;
-
-
-
 
 int main(int argc, char const *argv[])
 {
@@ -123,7 +120,7 @@ int main(int argc, char const *argv[])
   int ch, d = 0;
 
   keypad(stdscr, TRUE);
-  timeout(500);
+  timeout(50);
   noecho();
   curs_set(FALSE);
 
@@ -135,7 +132,7 @@ int main(int argc, char const *argv[])
     ch = getch();
     if (ch == KEY_UP || ch == KEY_DOWN || ch == KEY_RIGHT || ch == KEY_LEFT)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(500 - (clock() - roundTime)));
+      std::this_thread::sleep_for(std::chrono::milliseconds(50 - (clock() - roundTime)));
       switch (ch)
       {
       case KEY_UP:
@@ -153,6 +150,7 @@ int main(int argc, char const *argv[])
       }
     }
     snake.move(d, map, controller.items);
+    // duringGame = snake.move(d, map, controller.items);
 
     // item 관리 ===============================================
     controller.manageItems(map);
@@ -180,6 +178,10 @@ int main(int argc, char const *argv[])
     wrefresh(snake_map);
 
     flushinp();
+    // if(duringGame){
+      // duringGame = !isGameOver();
+    // }
+    
   }
 
   getch();
