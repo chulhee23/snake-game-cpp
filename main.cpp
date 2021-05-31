@@ -84,11 +84,30 @@ int main(int argc, char const *argv[])
 
   border(ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
   WINDOW *snake_map;
+
   snake_map = newwin(MAP_X, MAP_Y, 3, 3);
 
   wborder(snake_map, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
 
   mvprintw(1, 1, "SNAKE GAME");
+  
+  // score board =======
+  WINDOW *score_board;
+  score_board = newwin(15, 40, 3, MAP_Y + 4);
+  mvwprintw(score_board, 1, 2, "SCORE BOARD");
+  wbkgd(score_board, COLOR_PAIR(CLR_WALL));
+  wborder(score_board, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
+  mvwprintw(snake_map, 18, 48, "#");
+  
+  
+
+  WINDOW *mission_board;
+  mission_board = newwin(15, 40, 20, MAP_Y + 4);
+  mvwprintw(mission_board, 1, 2, "MISSION BOARD");
+  wbkgd(mission_board, COLOR_PAIR(CLR_WALL));
+  wborder(mission_board, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
+  mvwprintw(snake_map, 18, 48, "#");
+  
 
   Cell **map;
   map = new Cell *[MAP_X];
@@ -120,9 +139,9 @@ int main(int argc, char const *argv[])
   int ch, d = 0;
 
   keypad(stdscr, TRUE);
-  timeout(50);
+  timeout(500);
+  curs_set(0);
   noecho();
-  curs_set(FALSE);
 
   while (duringGame)
   {
@@ -132,7 +151,7 @@ int main(int argc, char const *argv[])
     ch = getch();
     if (ch == KEY_UP || ch == KEY_DOWN || ch == KEY_RIGHT || ch == KEY_LEFT)
     {
-      std::this_thread::sleep_for(std::chrono::milliseconds(50 - (clock() - roundTime)));
+      std::this_thread::sleep_for(std::chrono::milliseconds(500 - (clock() - roundTime)));
       switch (ch)
       {
       case KEY_UP:
@@ -176,11 +195,12 @@ int main(int argc, char const *argv[])
     // gate end ================
     controller.snakemapRefresh(map, snake_map);
     wrefresh(snake_map);
+    wrefresh(score_board);
+    wrefresh(mission_board);
 
     flushinp();
 
     // 뱀 길이 마지막 측정?
-    // 
     // if(duringGame){
       // duringGame = !isGameOver();
     // }
