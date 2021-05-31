@@ -71,14 +71,53 @@ void Controller::manageItems(Cell **map){
   }
 }
 
+void Controller::openGate(Cell **map){
+  // choose 2 walls from all walls
+  
+  srand(time(0));
+  int wall_size = walls.size();
+  
+  int first = rand() % (wall_size - 1);  
+  int second = rand() % (wall_size);
+  
+  if (second == first){
+    second++;
+  }
+
+  Position gate1 = walls[first];
+  Position gate2 = walls[second];
+
+  map[gate1.row][gate1.col].setValue(GATE);
+  map[gate2.row][gate2.col].setValue(GATE);
+
+  gates.push_back(gate1);
+  gates.push_back(gate2);
+  
+  gateOpen = true;
+  gateOpenAt = clock();
+}
+
+void Controller::closeGate(Cell **map){
+  double gateOpened = (double)(clock() - gateOpenAt) / CLOCKS_PER_SEC;
+  if (gateOpened > 5)
+  {
+    for(auto it = gates.begin(); it != gates.end(); it++) {
+      map[(*it).row][(*it).col].setValue(WALL);
+    }
+    gates.clear();
+    gateOpen = false;
+  }
+}
+
 void Controller::snakemapRefresh(Cell **map, WINDOW *snake_map)
 {
+  walls.clear();
   for (int i = 0; i < MAP_X; i++)
   {
     for (int j = 0; j < MAP_Y; j++)
     {
-      Position pos(i, j);
       int cellStatus = map[i][j].getValue();
+      Position pos(i, j);
       switch (cellStatus)
       {
       case EMPTY:
