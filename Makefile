@@ -1,28 +1,24 @@
-CC = g++
+CC = gcc
+CXX = g++
+CXXFLAGS = -Wall -std=c++11
+INCLUDES =
+LFLAGS =
+LIBS = -lncurses
+SRCS = main.cpp Controller.cpp Snake.cpp Cell.cpp
+OBJS = $(SRCS:.cpp=.o)
+MAIN = main.out
 
-all:
-	$(CC) -std=c++11 -o snakeMap snakeMap.cpp -lncursesw
+.PHONY : depend clean
 
-mac:
-	$(CC) -std=c++11 -o snakeMap snakeMap.cpp -lncurses
+all : $(MAIN)
+	rm -rf *.o
 
+$(MAIN) : $(OBJS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
-main: Cell.o Snake.o
-	$(CC) -o main.out main.cpp -lncursesw $^
+%o : %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES)  -c $<  -o $@ 
 
-mac_main: Cell.o Snake.o Controller.o
-	$(CC) -std=c++11 -o main.out main.cpp -lncurses $^
+clean :
+	$(RM) *.o *~ $(MAIN)
 
-Controller.o:
-	$(CC) -c Controller.h Controller.cpp
-
-Cell.o:
-	$(CC) -c Cell.h Cell.cpp
-
-
-Snake.o:
-	$(CC) -c Snake.h Snake.cpp Position.h
-
-
-clean:
-	rm -f *.o

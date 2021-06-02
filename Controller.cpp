@@ -177,3 +177,8 @@ void Controller::snakemapRefresh(Cell **map, WINDOW *snake_map)
     }
   }
 }
+
+
+bool Controller::isGameOver(bool result){
+  return result;
+}
