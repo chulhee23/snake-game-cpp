@@ -47,10 +47,16 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-  // map 설정 시작 ===================
-  srand(time(NULL));
+  nodelay(stdscr, FALSE); //blocking key input at screen
+  int ch1 = getch();
 
-  const int init_map[MAP_X][MAP_Y] =
+
+  if(ch1 == 1){
+
+  } else {
+    // map 설정 시작 ===================
+    srand(time(NULL));
+    const int init_map[MAP_X][MAP_Y] =
       {{2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -249,6 +255,11 @@ int main(int argc, char const *argv[])
     endwin();
 
   }
+
+  }
+
+
+  
 
   return 0;
   }
