@@ -1,12 +1,13 @@
 #include "Snake.h"
 #include "Position.h"
+
 using namespace std;
 
 bool Snake::move(int d, Cell **map, vector<Position>& items){
   // opposite direction
-  if(d == direction + 2 || d == direction - 2) return false;
 
   if(d == 0) d = direction;
+  if(d == direction + 2 || d == direction - 2) return false;
 
   // make new_head
   Position newHead = head;
@@ -25,7 +26,7 @@ bool Snake::move(int d, Cell **map, vector<Position>& items){
       break;
   }
 
-  if(map[newHead.row][newHead.col] == 1) return false;
+  if(map[newHead.row][newHead.col].getValue() == 1) return false;
 
   Position tail = body.back();
 
@@ -35,11 +36,18 @@ bool Snake::move(int d, Cell **map, vector<Position>& items){
   head = newHead;
   direction = d;
 
-  checkItem(map, items);
+  checkItem(map, items, tail);
 
-  if(body.size() < 3) return false;
+  if(body.size() < 2) return false;
+
+  for(auto it = body.begin(); it != body.end(); it++){
+    if(head.col == (*it).col && head.row == (*it).row){
+      return false;
+    }
+  }
 
   setSnakeMap(map, tail);
+  return true;
 }
 
 //if head == gate
@@ -114,16 +122,16 @@ Position Snake::changeCoordinate(int d, Position p){
 
 bool Snake::checkWall(Cell** map, int d, Position p){
   p = changeCoordinate(d, p);
-  if(map[p.row][p.col] == 1){
+  if(map[p.row][p.col].getValue() == 1){
     return true;
   }
   return false;
 }
 
-void Snake::checkItem(Cell** map, vector<Position>& items){
-  if(map[head.row][head.col] == 5){
+void Snake::checkItem(Cell** map, vector<Position>& items, Position tail){
+  if(map[head.row][head.col].getValue() == 5){
     body.push_back(tail);
-  }else if(map[head.row][head.col] == 6){
+  }else if(map[head.row][head.col].getValue() == 6){
     Position p = body.back();
     map[p.row][p.col] = 0;
     body.pop_back();
@@ -138,7 +146,8 @@ void Snake::checkItem(Cell** map, vector<Position>& items){
   }
 }
 
-void Snake::setSnakeMap(Cell** map){
+void Snake::setSnakeMap(Cell **map, Position tail)
+{
   map[head.row][head.col] = 3;
   map[tail.row][tail.col] = 0;
 
