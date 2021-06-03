@@ -11,6 +11,10 @@ using namespace std;
 class Controller
 {
 public:
+  int ateGrowItemCount = 0;
+  int atePoisonItemCount = 0;
+  int useGateCount = 0;
+
 
   vector<Position> items;
   vector<Position> walls;
@@ -24,6 +28,7 @@ public:
   void closeGate(Cell **map);
 
   void snakemapRefresh(Cell **map, WINDOW *snake_map);
+  bool isGameOver(bool result);
 };
 
 #endif
