@@ -14,6 +14,11 @@
 
 #define CLOCKS_PER_SEC 1000
 
+#define RIGHT 1
+#define DOWN 2
+#define LEFT 3
+#define UP 4
+
 // CLOCKS_PER_SEC 이 잘못 불러짐..... 1000000
 
 
@@ -103,14 +108,14 @@ int main(int argc, char const *argv[])
   wborder(snake_map, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
 
   mvprintw(1, 1, "SNAKE GAME");
-  
+
   // score board =======
   WINDOW *score_board;
   score_board = newwin(15, 40, 3, MAP_Y + 4);
   mvwprintw(score_board, 1, 2, "SCORE BOARD");
   wborder(score_board, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
   wbkgd(score_board, COLOR_PAIR(CLR_WALL));
-  
+
 
   WINDOW *mission_board;
   mission_board = newwin(15, 40, 20, MAP_Y + 4);
@@ -118,7 +123,7 @@ int main(int argc, char const *argv[])
   wbkgd(mission_board, COLOR_PAIR(CLR_WALL));
   wborder(mission_board, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE, ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
   mvwprintw(snake_map, 18, 48, "#");
-  
+
 
   Cell **map;
   map = new Cell *[MAP_X];
@@ -178,15 +183,15 @@ int main(int argc, char const *argv[])
           break;
         }
       }
-      snake.move(d, map, controller.items);
+      snake.move(d, map, controller);
       // duringGame = snake.move(d, map, controller.items);
 
       // item 관리 ===============================================
       controller.manageItems(map);
 
       // gate open =======================================
-      
-      
+
+
       // if (snake.getLength() > 5)
 
       if (gameTime > 3)
@@ -196,14 +201,14 @@ int main(int argc, char const *argv[])
           // gate_open
           controller.openGate(map);
         } else {
-          controller.closeGate(map);  
+          controller.closeGate(map);
         }
       }
 
       // gate end ================
       controller.snakemapRefresh(map, snake_map);
       wrefresh(snake_map);
-      
+
       mvwprintw(score_board, 2, 2, "B :    / 10");
       mvwprintw(score_board, 2, 5, to_string(snake.getLength()).c_str());
       mvwprintw(score_board, 3, 2, "+ : ");
@@ -214,13 +219,13 @@ int main(int argc, char const *argv[])
       mvwprintw(score_board, 5, 5, to_string(controller.useGateCount).c_str());
       mvwprintw(score_board, 6, 2, "PLAY_TIME : ");
       mvwprintw(score_board, 6, 12, to_string((int)(clock() - gameStartTime) / CLOCKS_PER_SEC).c_str());
-      
-      
+
+
       mvwprintw(mission_board, 2, 2, ("B :" + to_string(MAX_SNAKE_LENGTH) + " ( )").c_str());
       mvwprintw(mission_board, 3, 2, ("+ :" + to_string(GOAL_ITEM) + " ( )").c_str());
       mvwprintw(mission_board, 4, 2, ("- :" + to_string(GOAL_POISON_ITEM) + " ( )").c_str());
       mvwprintw(mission_board, 5, 2, ("G :" + to_string(GOAL_GATE) + " ( )").c_str());
-      
+
 
       if (snake.getLength() >= MAX_SNAKE_LENGTH){
         mvwprintw(mission_board, 2, 2, ("B :" + to_string(MAX_SNAKE_LENGTH) + " (V)").c_str());
@@ -259,7 +264,7 @@ int main(int argc, char const *argv[])
   }
 
 
-  
+
 
   return 0;
   }

@@ -2,11 +2,17 @@
 #include "Position.h"
 using namespace std;
 
-bool Snake::move(int d, Cell **map, vector<Position>& items){
-  // opposite direction
-  if(d == direction + 2 || d == direction - 2) return false;
+#define RIGHT 1
+#define DOWN 2
+#define LEFT 3
+#define UP 4
+
+bool Snake::move(int d, Cell **map, Controller& controller){
 
   if(d == 0) d = direction;
+
+  // opposite direction
+  if(d == direction + 2 || d == direction - 2) return false;
 
   // make new_head
   Position newHead = head;
@@ -25,7 +31,7 @@ bool Snake::move(int d, Cell **map, vector<Position>& items){
       break;
   }
 
-  if(map[newHead.row][newHead.col] == 1) return false;
+  if(map[newHead.row][newHead.col].getValue() == 1) return false;
 
   Position tail = body.back();
 
@@ -35,11 +41,18 @@ bool Snake::move(int d, Cell **map, vector<Position>& items){
   head = newHead;
   direction = d;
 
-  checkItem(map, items);
+  for(auto it = controller.gates.begin(); it < controller.gates.end(); it++){
+    Position p = it[0];
+    if(p.row == head.row && p.col == head.col) moveHead(map, controller.gates);
+  }
+
+  checkItem(map, controller.items, tail);
 
   if(body.size() < 3) return false;
 
   setSnakeMap(map, tail);
+
+  return true;
 }
 
 //if head == gate
@@ -114,18 +127,18 @@ Position Snake::changeCoordinate(int d, Position p){
 
 bool Snake::checkWall(Cell** map, int d, Position p){
   p = changeCoordinate(d, p);
-  if(map[p.row][p.col] == 1){
+  if(map[p.row][p.col].getValue() == 1){
     return true;
   }
   return false;
 }
 
-void Snake::checkItem(Cell** map, vector<Position>& items){
-  if(map[head.row][head.col] == 5){
+void Snake::checkItem(Cell** map, vector<Position>& items, Position tail){
+  if(map[head.row][head.col].getValue() == 5){
     body.push_back(tail);
-  }else if(map[head.row][head.col] == 6){
+  }else if(map[head.row][head.col].getValue() == 6){
     Position p = body.back();
-    map[p.row][p.col] = 0;
+    map[p.row][p.col].setValue(0);
     body.pop_back();
   }
 
@@ -138,11 +151,11 @@ void Snake::checkItem(Cell** map, vector<Position>& items){
   }
 }
 
-void Snake::setSnakeMap(Cell** map){
-  map[head.row][head.col] = 3;
-  map[tail.row][tail.col] = 0;
+void Snake::setSnakeMap(Cell** map, Position tail){
+  map[head.row][head.col].setValue(3);
+  map[tail.row][tail.col].setValue(0);
 
   for(int i = 0; i < body.size(); i++){
-    map[body[i].row][body[i].col] = 4;
+    map[body[i].row][body[i].col].setValue(4);
   }
 }
