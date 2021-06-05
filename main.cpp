@@ -52,11 +52,12 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-  nodelay(stdscr, FALSE); //blocking key input at screen
-  int ch1 = getch();
+  // nodelay(stdscr, FALSE); //blocking key input at screen
+  // int ch1 = getch();
 
 
-  if(ch1 == 1){
+  // if(ch1 == 1){
+  if(false){
 
   } else {
     // map 설정 시작 ===================
@@ -77,7 +78,7 @@ int main(int argc, char const *argv[])
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-       {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 4, 4, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+       {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 4, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -181,10 +182,12 @@ int main(int argc, char const *argv[])
         case KEY_LEFT:
           d = LEFT;
           break;
+        default:
+          break;
         }
       }
-      snake.move(d, map, controller);
-      // duringGame = snake.move(d, map, controller.items);
+      // snake.move(d, map, controller.items);
+      bool moveResult = snake.move(d, map, controller.items);
 
       // item 관리 ===============================================
       controller.manageItems(map);
@@ -240,9 +243,7 @@ int main(int argc, char const *argv[])
         mvwprintw(mission_board, 5, 2, ("G :" + to_string(MAX_SNAKE_LENGTH) + " (V)").c_str());
       }
 
-
-      duringGame = controller.isGameOver(true);
-
+      duringGame = controller.isGameOver(moveResult);
 
       wrefresh(score_board);
       wrefresh(mission_board);
