@@ -12,8 +12,6 @@ using namespace std;
 #define LEFT 3
 #define UP 4
 
-
-
 class Snake
 {
   int direction;
@@ -32,6 +30,7 @@ public:
   void setSnakeMap(Cell **map, Position tail);
   void setHead(Position pos){head = pos;}
   void setDirection(int d){direction = d;}
+  int getDirection(){return direction;}
   int getLength(){return body.size();}
 
 };

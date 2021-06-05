@@ -153,7 +153,7 @@ int main(int argc, char const *argv[])
 
   clock_t gameStartTime = clock();
   bool duringGame = true;
-  int ch, d = 0;
+  int ch = 0;
 
   keypad(stdscr, TRUE);
   timeout(500);
@@ -162,6 +162,7 @@ int main(int argc, char const *argv[])
   while(true){
     while (duringGame)
     {
+      int d = 0;
       clock_t roundTime = clock();
       int gameTime = (int)(roundTime - gameStartTime) / CLOCKS_PER_SEC;
       ch = getch();
@@ -187,7 +188,7 @@ int main(int argc, char const *argv[])
         }
       }
       // snake.move(d, map, controller.items);
-      bool moveResult = snake.move(d, map, controller.items);
+      bool moveResult = snake.move(d, map, controller);
 
       // item 관리 ===============================================
       controller.manageItems(map);

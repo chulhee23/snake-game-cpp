@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++11
 INCLUDES =
 LFLAGS =
-LIBS = -lncurses
+LIBS = -lncursesw
 SRCS = main.cpp Controller.cpp Snake.cpp Cell.cpp
 OBJS = $(SRCS:.cpp=.o)
 MAIN = main.out
@@ -17,8 +17,7 @@ $(MAIN) : $(OBJS)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
 %o : %.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDES)  -c $<  -o $@ 
+	$(CXX) $(CXXFLAGS) $(INCLUDES)  -c $<  -o $@
 
 clean :
 	$(RM) *.o *~ $(MAIN)
-
