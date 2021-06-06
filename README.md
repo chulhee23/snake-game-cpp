@@ -3,17 +3,6 @@
 ## 과제 수행
 
 
-## 뱀 바디
-snake tail 을 Head 의 아래?
-- deque
-    - push, pop
-
-- vector 
-    - push back 
-    - push first
-
-
-
 
 ### 1단계
 NCurses Library 함수들을 사용하여 2차원 배열로 된 Snake Map을 Game 화면으로 표시하는 프로그램을 완성한다
@@ -29,7 +18,7 @@ NCurses Library 함수들을 사용하여 2차원 배열로 된 Snake Map을 Gam
 - [v] 아이템 상호작용
 - [v] 게이트 열고 닫기
 
-- [v] 게이트 진입 시 뱀 움직임과 같이 디렉션 수정 - 윤호
+- [ ] 게이트 진입 시 뱀 움직임과 같이 디렉션 수정 - 윤호
 
 
 - [v] 벽 충돌 - 윤호
@@ -42,16 +31,16 @@ NCurses Library 함수들을 사용하여 2차원 배열로 된 Snake Map을 Gam
 - while 문 안에서, 1 2 받아서 맵 선택 -> duringGame = true;
 
 
-- [ ] idx map 을 초기화 - 철희
-- [ ] 스테이지 선택 및 맵 바꾸기 - 철희
 - [v] 게임 오버 - 철희
+- [v] idx map 을 초기화 - 철희
+- [v] 스테이지 선택 및 맵 바꾸기 - 철희
 - [ ] closeGate 시, 뱀 검사
 
+
 - 윈도우 관련
+- [ ] 미션 체크
 - [v] 스코어 보드 - 철희
 - [v] 미션 보드 - 철희
-
-
 - 리팩토링
 
 
