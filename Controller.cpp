@@ -3,30 +3,10 @@
 #include <ctime>
 #include "Cell.h"
 #include "Controller.h"
+#include "constants.h"
 
-#define CLOCKS_PER_SEC 1000
 
-const int MAP_X = 21;
-const int MAP_Y = 43;
-
-const int EMPTY = 0;
-const int WALL = 1;
-const int IMMUNE_WALL = 2;
-const int SNAKE_HEAD = 3;
-const int SNAKE_BODY = 4;
-const int GROW_ITEM = 5;
-const int POISON_ITEM = 6;
-const int GATE = 7;
-
-const int CLR_EMPTY = CLR_EMPTY;
-const int CLR_WALL = WALL;
-const int CLR_IMMUNE_WALL = IMMUNE_WALL;
-const int CLR_SNAKE_HEAD = SNAKE_HEAD;
-const int CLR_SNAKE_BODY = SNAKE_BODY;
-const int CLR_POISON_ITEM = POISON_ITEM;
-const int CLR_GROW_ITEM = GROW_ITEM;
-const int CLR_GATE = GATE;
-
+using namespace constants;
 using namespace std;
 
 

@@ -1,8 +1,10 @@
 #include "Snake.h"
 #include "Position.h"
 #include "Controller.h"
+#include "constants.h"
 #include <iostream>
 
+using namespace constants;
 using namespace std;
 
 bool Snake::move(int d, Cell **map, Controller &controller){
@@ -75,13 +77,13 @@ void Snake::moveHead(Cell** map, Controller &controller){
 
   // MAP_X MAP_Y
   Position newHead = outGate;
-  if(outGate.row == 0 || outGate.col == 0 || outGate.row == 20 || outGate.col == 42){
+  if(outGate.row == 0 || outGate.col == 0 || outGate.row == MAP_X - 1 || outGate.col == MAP_Y - 1){
     switch (outGate.row) {
       case 0:
         direction = DOWN;
         newHead.row++;
         break;
-      case 20:
+      case (MAP_X -1):
         direction = UP;
         newHead.row--;
         break;
@@ -91,7 +93,7 @@ void Snake::moveHead(Cell** map, Controller &controller){
         direction = RIGHT;
         newHead.col++;
         break;
-      case 42:
+      case (MAP_Y - 1):
         direction = LEFT;
         newHead.col--;
         break;

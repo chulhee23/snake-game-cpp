@@ -5,12 +5,10 @@
 #include "Cell.h"
 #include "Position.h"
 #include "Controller.h"
-using namespace std;
+#include "constants.h"
 
-#define RIGHT 1
-#define DOWN 2
-#define LEFT 3
-#define UP 4
+using namespace constants;
+using namespace std;
 
 class Controller;
 
