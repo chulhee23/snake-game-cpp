@@ -38,9 +38,9 @@ const int CLR_POISON_ITEM = POISON_ITEM;
 const int CLR_GROW_ITEM = GROW_ITEM;
 const int CLR_GATE = GATE;
 
-const int MAX_SNAKE_LENGTH = 5;
-const int GOAL_ITEM = 5;
-const int GOAL_POISON_ITEM = 2;
+const int MAX_SNAKE_LENGTH = 3;
+const int GOAL_ITEM = 1;
+const int GOAL_POISON_ITEM = 1;
 const int GOAL_GATE = 1;
 
 using namespace std;
@@ -257,7 +257,7 @@ int main(int argc, char const *argv[])
         }
       }
       // snake.move(d, map, controller.items);
-      bool moveResult = snake.move(d, map, controller.items);
+      bool moveResult = snake.move(d, map, controller);
 
       // item 관리 ===============================================
       controller.manageItems(map);
@@ -266,7 +266,7 @@ int main(int argc, char const *argv[])
 
       // if (snake.getLength() > 5)
 
-      if (gameTime > 3)
+      if (gameTime > 20)
       {
         if (controller.gateOpen == false)
         {

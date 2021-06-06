@@ -4,6 +4,7 @@
 #include <vector>
 #include "Cell.h"
 #include "Position.h"
+#include "Controller.h"
 using namespace std;
 
 #define RIGHT 1
@@ -11,6 +12,7 @@ using namespace std;
 #define LEFT 3
 #define UP 4
 
+class Controller;
 
 
 class Snake
@@ -23,12 +25,12 @@ public:
   Snake(){direction = 3; head = Position(15, 18); body.push_back(Position(15, 19)); body.push_back(Position(15, 20));body.push_back(Position(15, 21));}
   Position getHead(){return head;};
   vector<Position> getBody(){return body;};
-  bool move(int d, Cell** map, vector<Position>& items);
-  void moveHead(Cell** map, vector<Position>& gates);
+  bool move(int d, Cell** map, Controller &controller);
+  void moveHead(Cell** map, vector<Position>& gates, Controller &controller);
   Position changeCoordinate(int d, Position p);
   void append_body(Position pos){body.push_back(pos);}
   bool checkWall(Cell** map, int d, Position p);
-  void checkItem(Cell **map, vector<Position> &items, Position tail);
+  void checkItem(Cell **map, Controller &controller, Position tail);
   void setSnakeMap(Cell **map, Position tail);
   void setHead(Position pos){head = pos;}
   void setDirection(int d){direction = d;}

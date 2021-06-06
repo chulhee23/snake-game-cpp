@@ -38,7 +38,7 @@ void Controller::manageItems(Cell **map){
   {
     Position pos = items[i];
     int tmp = (int)(roundTime - map[pos.row][pos.col].getCreatedAt()) / CLOCKS_PER_SEC;
-    if (tmp > 5)
+    if (tmp > 10)
     {
       map[pos.row][pos.col].setValue(EMPTY);
       items.erase(items.begin() + i);
@@ -97,7 +97,7 @@ void Controller::openGate(Cell **map){
   gateOpenAt = clock();
 }
 
-void Controller::closeGate(Cell **map, Snake snake){
+void Controller::closeGate(Cell **map, Snake &snake){
   double gateOpened = (double)(clock() - gateOpenAt) / CLOCKS_PER_SEC;
   for (auto it = gates.begin(); it != gates.end(); it++)
   {
@@ -116,7 +116,7 @@ void Controller::closeGate(Cell **map, Snake snake){
 
   }
   
-  if (gateOpened > 5)
+  if (gateOpened > 20)
   {
     for(auto it = gates.begin(); it != gates.end(); it++) {
       map[(*it).row][(*it).col].setValue(WALL);
