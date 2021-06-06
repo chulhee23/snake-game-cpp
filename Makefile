@@ -3,8 +3,8 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++11
 INCLUDES =
 LFLAGS =
-LIBS = -lncursesw
-SRCS = main.cpp Controller.cpp Snake.cpp Cell.cpp
+LIBS = -lncurses
+SRCS = main.cpp Controller.cpp Snake.cpp Cell.cpp snake_game.cpp
 OBJS = $(SRCS:.cpp=.o)
 MAIN = main.out
 

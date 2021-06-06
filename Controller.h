@@ -5,8 +5,10 @@
 
 #include "Position.h"
 #include "Cell.h"
+#include "Snake.h"
 
 using namespace std;
+class Snake;
 
 class Controller
 {
@@ -25,7 +27,7 @@ public:
 
   void manageItems(Cell **map);
   void openGate(Cell **map);
-  void closeGate(Cell **map);
+  void closeGate(Cell **map, Snake &snake);
 
   void snakemapRefresh(Cell **map, WINDOW *snake_map);
   bool isGameOver(bool result);

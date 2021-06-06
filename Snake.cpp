@@ -5,7 +5,8 @@
 
 using namespace std;
 
-bool Snake::move(int d, Cell **map, Controller& controller){
+bool Snake::move(int d, Cell **map, Controller &controller){
+  vector<Position> items = controller.items;
   // opposite direction
 
   if(d == 0) d = direction;
@@ -40,11 +41,11 @@ bool Snake::move(int d, Cell **map, Controller& controller){
 
   for(auto it = controller.gates.begin(); it != controller.gates.end(); it++){
     if(head.col == (*it).col && head.row == (*it).row){
-      moveHead(map, controller.gates);
+      moveHead(map, controller);
     }
   }
 
-  checkItem(map, controller.items, tail);
+  checkItem(map, controller, tail);
 
   if(body.size() < 2) return false;
 
@@ -60,7 +61,8 @@ bool Snake::move(int d, Cell **map, Controller& controller){
 }
 
 //if head == gate
-void Snake::moveHead(Cell** map, vector<Position>& gates){
+void Snake::moveHead(Cell** map, Controller &controller){
+  vector<Position>& gates = controller.gates;
   Position inGate, outGate;
   if(gates[0].row == head.row && gates[0].col == head.col){
     inGate = gates[0];
@@ -69,6 +71,7 @@ void Snake::moveHead(Cell** map, vector<Position>& gates){
     inGate = gates[1];
     outGate = gates[0];
   }
+  controller.useGateCount++;
 
   // MAP_X MAP_Y
   Position newHead = outGate;
@@ -136,13 +139,17 @@ bool Snake::checkWall(Cell** map, int d, Position p){
   return false;
 }
 
-void Snake::checkItem(Cell** map, vector<Position>& items, Position tail){
+void Snake::checkItem(Cell** map, Controller &controller, Position tail){
+  vector<Position>& items = controller.items;
+
   if(map[head.row][head.col].getValue() == 5){
     body.push_back(tail);
+    controller.ateGrowItemCount++;
   }else if(map[head.row][head.col].getValue() == 6){
     Position p = body.back();
     map[p.row][p.col].setValue(0);
     body.pop_back();
+    controller.atePoisonItemCount++;
   }
 
   for(int i = 0; i < items.size(); i++){
