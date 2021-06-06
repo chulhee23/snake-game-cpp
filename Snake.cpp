@@ -1,9 +1,11 @@
 #include "Snake.h"
 #include "Position.h"
+#include "Controller.h"
+#include <iostream>
 
 using namespace std;
 
-bool Snake::move(int d, Cell **map, vector<Position>& items){
+bool Snake::move(int d, Cell **map, Controller& controller){
   // opposite direction
 
   if(d == 0) d = direction;
@@ -36,7 +38,13 @@ bool Snake::move(int d, Cell **map, vector<Position>& items){
   head = newHead;
   direction = d;
 
-  checkItem(map, items, tail);
+  for(auto it = controller.gates.begin(); it != controller.gates.end(); it++){
+    if(head.col == (*it).col && head.row == (*it).row){
+      moveHead(map, controller.gates);
+    }
+  }
+
+  checkItem(map, controller.items, tail);
 
   if(body.size() < 2) return false;
 
@@ -47,6 +55,7 @@ bool Snake::move(int d, Cell **map, vector<Position>& items){
   }
 
   setSnakeMap(map, tail);
+
   return true;
 }
 
@@ -63,25 +72,25 @@ void Snake::moveHead(Cell** map, vector<Position>& gates){
 
   // MAP_X MAP_Y
   Position newHead = outGate;
-  if(outGate.row == 0 || outGate.col == 0 || outGate.row == 21 - 1 || outGate.col == 43 - 1){
+  if(outGate.row == 0 || outGate.col == 0 || outGate.row == 20 || outGate.col == 42){
     switch (outGate.row) {
       case 0:
         direction = DOWN;
-        newHead.row = outGate.row++;
+        newHead.row++;
         break;
-      case 21 -1:
+      case 20:
         direction = UP;
-        newHead.row = outGate.row--;
+        newHead.row--;
         break;
     }
     switch (outGate.col) {
       case 0:
         direction = RIGHT;
-        newHead.col = outGate.col++;
+        newHead.col++;
         break;
-      case 43 - 1:
+      case 42:
         direction = LEFT;
-        newHead.col = outGate.col--;
+        newHead.col--;
         break;
     }
   }else{
@@ -98,7 +107,6 @@ void Snake::moveHead(Cell** map, vector<Position>& gates){
       newHead = changeCoordinate(direction, newHead);
     }
   }
-
   head = newHead;
 }
 
@@ -133,7 +141,7 @@ void Snake::checkItem(Cell** map, vector<Position>& items, Position tail){
     body.push_back(tail);
   }else if(map[head.row][head.col].getValue() == 6){
     Position p = body.back();
-    map[p.row][p.col] = 0;
+    map[p.row][p.col].setValue(0);
     body.pop_back();
   }
 
@@ -148,10 +156,10 @@ void Snake::checkItem(Cell** map, vector<Position>& items, Position tail){
 
 void Snake::setSnakeMap(Cell **map, Position tail)
 {
-  map[head.row][head.col] = 3;
-  map[tail.row][tail.col] = 0;
+  map[head.row][head.col].setValue(3);
+  map[tail.row][tail.col].setValue(0);
 
   for(int i = 0; i < body.size(); i++){
-    map[body[i].row][body[i].col] = 4;
+    map[body[i].row][body[i].col].setValue(4);
   }
 }

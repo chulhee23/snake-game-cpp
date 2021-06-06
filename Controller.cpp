@@ -73,13 +73,13 @@ void Controller::manageItems(Cell **map){
 
 void Controller::openGate(Cell **map){
   // choose 2 walls from all walls
-  
+
   srand(time(0));
   int wall_size = walls.size();
-  
-  int first = rand() % (wall_size - 1);  
+
+  int first = rand() % (wall_size - 1);
   int second = rand() % (wall_size);
-  
+
   if (second == first){
     second++;
   }
@@ -92,14 +92,14 @@ void Controller::openGate(Cell **map){
 
   gates.push_back(gate1);
   gates.push_back(gate2);
-  
+
   gateOpen = true;
   gateOpenAt = clock();
 }
 
 void Controller::closeGate(Cell **map){
   double gateOpened = (double)(clock() - gateOpenAt) / CLOCKS_PER_SEC;
-  if (gateOpened > 5)
+  if (gateOpened > 20)
   {
     for(auto it = gates.begin(); it != gates.end(); it++) {
       map[(*it).row][(*it).col].setValue(WALL);
