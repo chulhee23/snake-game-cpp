@@ -275,7 +275,7 @@ int main(int argc, char const *argv[])
         }
         else
         {
-          controller.closeGate(map);
+          controller.closeGate(map, snake);
         }
       }
 
@@ -317,14 +317,8 @@ int main(int argc, char const *argv[])
       }
 
       duringGame = controller.isGameOver(moveResult);
-      if (snake.getLength() >= MAX_SNAKE_LENGTH 
-        && controller.ateGrowItemCount >= GOAL_ITEM 
-        && controller.atePoisonItemCount >= GOAL_POISON_ITEM
-        && controller.atePoisonItemCount >= GOAL_POISON_ITEM
-        && controller.useGateCount >= GOAL_GATE
-        )
+      if (snake.getLength() >= MAX_SNAKE_LENGTH && controller.ateGrowItemCount >= GOAL_ITEM && controller.atePoisonItemCount >= GOAL_POISON_ITEM&& controller.useGateCount >= GOAL_GATE)
       {
-        
         duringGame = false;
       }
 

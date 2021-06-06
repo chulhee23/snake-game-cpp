@@ -34,7 +34,7 @@ NCurses Library 함수들을 사용하여 2차원 배열로 된 Snake Map을 Gam
 - [v] 게임 오버 - 철희
 - [v] idx map 을 초기화 - 철희
 - [v] 스테이지 선택 및 맵 바꾸기 - 철희
-- [ ] closeGate 시, 뱀 검사
+- [v] closeGate 시, 뱀 검사
 
 
 - 윈도우 관련

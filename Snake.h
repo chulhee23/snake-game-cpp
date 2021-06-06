@@ -21,7 +21,8 @@ class Snake
 
 public:
   Snake(){direction = 3; head = Position(15, 18); body.push_back(Position(15, 19)); body.push_back(Position(15, 20));body.push_back(Position(15, 21));}
-
+  Position getHead(){return head;};
+  vector<Position> getBody(){return body;};
   bool move(int d, Cell** map, vector<Position>& items);
   void moveHead(Cell** map, vector<Position>& gates);
   Position changeCoordinate(int d, Position p);
