@@ -22,8 +22,9 @@ int main(int argc, char const *argv[])
   setlocale(LC_ALL, "");
   srand(time(NULL));
   int stageNumber;
+  int gameMode = INITIAL_MODE;
   while(true){
-    stageNumber = selectGame();
+    stageNumber = selectGame(gameMode);
     switch (stageNumber)
     {
     case 4:
@@ -194,9 +195,13 @@ int main(int argc, char const *argv[])
       }
 
       duringGame = controller.isGameOver(moveResult);
+      if(duringGame == false){
+        gameMode = FAILED;
+      }
       if (snake.getLength() >= MAX_SNAKE_LENGTH && controller.ateGrowItemCount >= GOAL_ITEM && controller.atePoisonItemCount >= GOAL_POISON_ITEM&& controller.useGateCount >= GOAL_GATE)
       {
         duringGame = false;
+        gameMode = COMPLETE;
       }
 
       wrefresh(score_board);
