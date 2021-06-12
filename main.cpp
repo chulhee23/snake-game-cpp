@@ -192,11 +192,11 @@ int main(int argc, char const *argv[])
       }
       if (controller.atePoisonItemCount >= GOAL_POISON_ITEM)
       {
-        mvwprintw(mission_board, 4, 2, ("- :" + to_string(MAX_SNAKE_LENGTH) + " (V)").c_str());
+        mvwprintw(mission_board, 4, 2, ("- :" + to_string(GOAL_POISON_ITEM) + " (V)").c_str());
       }
       if (controller.useGateCount >= GOAL_GATE)
       {
-        mvwprintw(mission_board, 5, 2, ("G :" + to_string(MAX_SNAKE_LENGTH) + " (V)").c_str());
+        mvwprintw(mission_board, 5, 2, ("G :" + to_string(GOAL_GATE) + " (V)").c_str());
       }
 
       duringGame = controller.isGameOver(moveResult);
