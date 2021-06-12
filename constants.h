@@ -5,11 +5,11 @@
 
 
 namespace constants{
-  const int WAIT_SECONDS = 300;
+  const int WAIT_SECONDS = 500;
   const int INITIAL_MODE = 0;
   const int COMPLETE = 1;
   const int FAILED = 2;
-  
+
   const int RIGHT = 1;
   const int DOWN = 2;
   const int LEFT = 3;
