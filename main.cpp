@@ -35,7 +35,6 @@ int main(int argc, char const *argv[])
       break;
     }
 
-    bool snake_length_flag = false;
     int MAX_SNAKE_LENGTH = goals[stageNumber][0];
     int GOAL_ITEM = goals[stageNumber][1];
     int GOAL_POISON_ITEM = goals[stageNumber][2];
@@ -182,9 +181,7 @@ int main(int argc, char const *argv[])
       mvwprintw(mission_board, 4, 2, ("- :" + to_string(GOAL_POISON_ITEM) + " ( )").c_str());
       mvwprintw(mission_board, 5, 2, ("G :" + to_string(GOAL_GATE) + " ( )").c_str());
 
-      if(snake.getLength() >= MAX_SNAKE_LENGTH) snake_length_flag = true;
-
-      if (snake_length_flag)
+      if (snake.getLength() >= MAX_SNAKE_LENGTH)
       {
         mvwprintw(mission_board, 2, 2, ("B :" + to_string(MAX_SNAKE_LENGTH) + " (V)").c_str());
       }
@@ -205,7 +202,7 @@ int main(int argc, char const *argv[])
       if(duringGame == false){
         gameMode = FAILED;
       }
-      if (snake_length_flag && controller.ateGrowItemCount >= GOAL_ITEM && controller.atePoisonItemCount >= GOAL_POISON_ITEM&& controller.useGateCount >= GOAL_GATE)
+      if (snake.getLength() >= MAX_SNAKE_LENGTH && controller.ateGrowItemCount >= GOAL_ITEM && controller.atePoisonItemCount >= GOAL_POISON_ITEM&& controller.useGateCount >= GOAL_GATE)
       {
         duringGame = false;
         gameMode = COMPLETE;
