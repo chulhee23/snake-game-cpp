@@ -36,11 +36,16 @@ namespace constants{
   const int CLR_GROW_ITEM = GROW_ITEM;
   const int CLR_GATE = GATE;
 
-  const int MAX_SNAKE_LENGTH = 3;
-  const int GOAL_ITEM = 1;
-  const int GOAL_POISON_ITEM = 1;
-  const int GOAL_GATE = 1;
-
+  // const int MAX_SNAKE_LENGTH = 3;
+  // const int GOAL_ITEM = 1;
+  // const int GOAL_POISON_ITEM = 1;
+  // const int GOAL_GATE = 1;
+  const int goals[4][4] = {
+    {5, 3, 2, 1},
+    {6, 4, 2, 1},
+    {7, 3, 2, 1},
+    {8, 5, 2, 1}
+  };
   const int maps[4][MAP_X][MAP_Y] = {
       // 0
       {

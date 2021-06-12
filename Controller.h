@@ -16,11 +16,8 @@ public:
   int ateGrowItemCount = 0;
   int atePoisonItemCount = 0;
   int useGateCount = 0;
-
-
   vector<Position> items;
   vector<Position> walls;
-  
   vector<Position> gates;
   bool gateOpen = false;
   clock_t gateOpenAt = clock();
@@ -28,7 +25,6 @@ public:
   void manageItems(Cell **map);
   void openGate(Cell **map);
   void closeGate(Cell **map, Snake &snake);
-
   void snakemapRefresh(Cell **map, WINDOW *snake_map);
   bool isGameOver(bool result);
 };

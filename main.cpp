@@ -1,6 +1,5 @@
 
 #include <iostream>
-#include <string>
 #include <vector>
 #include <ncurses.h>
 #include <ctime>
@@ -17,11 +16,12 @@
 using namespace constants;
 using namespace std;
 
+
 int main(int argc, char const *argv[])
 {
   setlocale(LC_ALL, "");
   srand(time(NULL));
-  int stageNumber;
+  int stageNumber = -1;
   int gameMode = INITIAL_MODE;
   while(true){
     stageNumber = selectGame(gameMode);
@@ -35,6 +35,11 @@ int main(int argc, char const *argv[])
     default:
       break;
     }
+
+    int MAX_SNAKE_LENGTH = goals[stageNumber][0];
+    int GOAL_ITEM = goals[stageNumber][1];
+    int GOAL_POISON_ITEM = goals[stageNumber][2];
+    int GOAL_GATE = goals[stageNumber][3];
 
     addch(ACS_LTEE);
     addch(ACS_RTEE);
@@ -146,7 +151,7 @@ int main(int argc, char const *argv[])
 
       // if (snake.getLength() > 5)
 
-      if (gameTime > 20)
+      if (gameTime > 10)
       {
         if (controller.gateOpen == false)
         {

@@ -1,7 +1,6 @@
 #ifndef __CELL__
 #define __CELL__
 
-#include <string>
 #include <ctime>
 
 using namespace std;
@@ -19,14 +18,6 @@ public:
   void setCreatedAt(clock_t time){createdAt = time;}
   clock_t getCreatedAt() const;
   
-};
-
-class Wall: public Cell {
-  int status;
-
-public:
-  Wall(int value = 1);
-  int getStatus() { return status; }
 };
 
 #endif

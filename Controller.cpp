@@ -96,7 +96,7 @@ void Controller::closeGate(Cell **map, Snake &snake){
 
   }
   
-  if (gateOpened > 20)
+  if (gateOpened > 10)
   {
     for(auto it = gates.begin(); it != gates.end(); it++) {
       map[(*it).row][(*it).col].setValue(WALL);

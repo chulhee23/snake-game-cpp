@@ -1,5 +1,4 @@
 #include <ncurses.h>
-#include <iostream>
 #include <string>
 #include "snake_game.h"
 
